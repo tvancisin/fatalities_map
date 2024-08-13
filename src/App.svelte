@@ -10,7 +10,7 @@
   let polygon_data;
   let country_data;
   let csv_path = [
-    "../src/assets/data/filled_polygon_data.csv",
+    "../src/assets/data/filled_polygon_data_5.csv",
     "../src/assets/data/country_data.csv",
   ];
   getCSV(csv_path).then((data) => {
@@ -22,7 +22,7 @@
   let mygeojson;
   const json_path = "../src/assets/data/country_polygons.json";
 
-  let scaleHeight = d3.scaleLinear().domain([1, 20000]).range([1, 100000])
+  let scaleHeight = d3.scaleLinear().domain([1, 10000]).range([1, 100000])
 
   getGeo(json_path).then((geo) => {
     //create array of country codes
@@ -43,8 +43,6 @@
           return feature;
         }),
     };
-    console.log(filteredGeoJSON);
-    
 
     mygeojson = filteredGeoJSON;
   });
@@ -83,11 +81,13 @@
 </main>
 
 <style>
+
   main {
     width: 100vw;
     height: 100vh;
     font-family: "Montserrat";
   }
+
   h1 {
     position: absolute;
     top: 0px;
@@ -97,7 +97,7 @@
     text-align: center;
     color: white;
     z-index: 999;
-    background-color: none;
+    background: rgba(32, 32, 32, 0.9);
   }
 
   @media only screen and (max-width: 1450px) {
@@ -106,7 +106,7 @@
     }
   }
 
-  @media only screen and (max-width: 1024px) {
+  @media only screen and (max-width: 1200px) {
     h1 {
       font-size: 1.6em;
     }

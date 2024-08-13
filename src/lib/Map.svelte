@@ -42,9 +42,7 @@
       "pk.eyJ1Ijoic2FzaGFnYXJpYmFsZHkiLCJhIjoiY2xyajRlczBlMDhqMTJpcXF3dHJhdTVsNyJ9.P_6mX_qbcbxLDS1o_SxpFg";
     map = new mapboxgl.Map({
       container: map,
-      // style: "mapbox://styles/sashagaribaldy/clxstrxes00qv01pf8dgl4o20",
-      // style: "mapbox://styles/sashagaribaldy/cls3s3yi6018401qyen91fo17",
-      style: "mapbox://styles/mapbox/light-v11",
+      style: "mapbox://styles/sashagaribaldy/clxstrxes00qv01pf8dgl4o20",
       center: [50.224518, 22.213995],
       zoom: 2.5,
       maxZoom: 5,
@@ -66,9 +64,9 @@
           "fill-extrusion-color": {
             property: "total_fatalities",
             stops: [
-              [100, "#f08989"],
-              [10000, "#d62e2e"],
-              [100000, "#731111"],
+              [100, "#bdbcbc"],
+              [10000, "#767676"],
+              [100000, "#403F3F"],
             ],
           },
           "fill-extrusion-height": [
