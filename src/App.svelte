@@ -11,9 +11,9 @@
   let country_data;
   let icon_data;
   let csv_path = [
-    "/data/filled_polygon_data_5.csv",
-    "/data/country_data.csv",
-    "/data/agt_point_data.csv",
+    "./data/filled_polygon_data_5.csv",
+    "./data/country_data.csv",
+    "./data/agt_point_data.csv",
   ];
   getCSV(csv_path).then((data) => {
     polygon_data = data[0];
