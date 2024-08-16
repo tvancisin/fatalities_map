@@ -1,13 +1,12 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
   import mapboxgl from "mapbox-gl";
-  import { all_countries } from "../assets/data/all_countries";
   import * as turf from "turf";
 
   const dispatch = createEventDispatcher();
 
   export let mygeojson;
-  console.log(mygeojson);
+  export let icon_data;
 
   let map;
   let current_zoom = 2.5;
@@ -35,6 +34,7 @@
     }
   }
 
+  let imageURL = new URL("../assets/agt.png", import.meta.url).href;
   let hoveredPolygonId = null;
 
   onMount(() => {
@@ -43,6 +43,7 @@
     map = new mapboxgl.Map({
       container: map,
       style: "mapbox://styles/sashagaribaldy/clxstrxes00qv01pf8dgl4o20",
+      // style: "mapbox://styles/mapbox/light-v11",
       center: [50.224518, 22.213995],
       zoom: 2.5,
       maxZoom: 5,
@@ -64,15 +65,15 @@
           "fill-extrusion-color": {
             property: "total_fatalities",
             stops: [
-              [100, "#bdbcbc"],
-              [10000, "#767676"],
-              [100000, "#403F3F"],
+              [100, "#FF8000"],
+              [10000, "#892D02"],
+              [100000, "#4E0303"],
             ],
           },
           "fill-extrusion-height": [
             "case",
             ["boolean", ["feature-state", "hover"], false],
-            70000, // Height when hovered
+            ["+", ["get", "total_fatalities"], 80000], // Add 70000 on hover
             ["get", "total_fatalities"], // Default height
           ],
           "fill-extrusion-base": 0,
@@ -104,21 +105,38 @@
         },
       });
 
-      // // Add outline layer
-      // map.addLayer({
-      //   id: `borders`,
-      //   type: "line",
-      //   source: "countries",
-      //   paint: {
-      //     "line-color": "#000",
-      //     "line-width": [
-      //       "case",
-      //       ["boolean", ["feature-state", "hover"], false],
-      //       2,
-      //       0,
-      //     ],
-      //   },
-      // });
+      let popup; // Declare the popup variable outside the event listeners
+
+      //add icons for agreements
+      for (const marker of icon_data.features) {
+        const el = document.createElement("div");
+        const width = 30;
+        const height = 30;
+        el.style.backgroundImage = `url(${imageURL})`;
+        el.style.width = `${width}px`;
+        el.style.height = `${height}px`;
+        el.style.backgroundSize = "100%";
+        el.style.cursor = "pointer";
+
+        el.addEventListener("mouseover", () => {
+          // Create the popup and assign it to the popup variable
+          popup = new mapboxgl.Popup({ closeOnClick: false, closeButton: false })
+            .setLngLat(marker.geometry.coordinates)
+            .setHTML(`<p style="color: black; font-size: 12px;">` + marker.properties.tooltip + `</p>`)
+            .addTo(map);
+        });
+
+        el.addEventListener("mouseout", () => {
+          // Remove the popup when mouse leaves the element
+          if (popup) {
+            popup.remove();
+          }
+        });
+
+        new mapboxgl.Marker(el)
+          .setLngLat(marker.geometry.coordinates)
+          .addTo(map);
+      }
 
       map.on("click", "countries-layer", (e) => {
         let clicked_country = e.features[0].properties.ADMIN;
@@ -142,7 +160,7 @@
             50.84788646,
           ];
         } else {
-          let countries = all_countries.features;
+          let countries = mygeojson.features;
           let the_country = countries.find(function (d) {
             return d.properties.ADMIN == clicked_country;
           });

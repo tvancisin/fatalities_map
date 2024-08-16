@@ -8,15 +8,25 @@
     export let selected_country_details;
     let details_width;
     let details_height;
+    let overview_height;
+
+    let acled_month, acled_year, ucdp_month, ucdp_year, tracker_link, pax_link;
+
+    $: if (selected_country_details) {
+        acled_month = +selected_country_details.acled_events_last_month;
+        acled_year = +selected_country_details.acled_events_last_12;
+
+        ucdp_month = +selected_country_details.ucdp_events_last_month;
+        ucdp_year = +selected_country_details.ucdp_events_last_12;
+
+        tracker_link = selected_country_details.tracker_url;
+        pax_link = selected_country_details.search_pax;
+    }
+
+    $: console.log(selected_country_details);
 
     function closeVisualization() {
         dispatch("close");
-    }
-
-    $: if (selected_country_details) {
-        d3.select("#peace").html(selected_country_details.peace_process_text);
-        // d3.select("#year").html(individual_info.properties.year);
-        // d3.select("#month").html(individual_info.properties.month);
     }
 </script>
 
@@ -25,24 +35,72 @@
     bind:clientWidth={details_width}
     bind:clientHeight={details_height}
 >
-    <button class="btn close" on:click={closeVisualization}
-        ><i class="fa fa-close"></i></button
-    >
-
     <div id="peace_title_div">
+        <button class="btn close" on:click={closeVisualization}
+            ><i class="fa fa-close"></i></button
+        >
         <h3>Peace Process</h3>
     </div>
 
     <div id="peace_content">
-        <pre id="peace"></pre>
-        <br />
-        <pre id="year"></pre>
-        <br />
-        <pre id="month"></pre>
+        <div id="overview" bind:clientHeight={overview_height}>
+            <h5>Overview</h5>
+            <div class="content-wrapper">
+                <div class="content-box">
+                    <h5>Last Month</h5>
+                    <div id="acled_month">ACLED: {acled_month}</div>
+                    <div id="ucdp_month">UCDP: {ucdp_month}</div>
+                </div>
+                <div class="content-box">
+                    <h5>Last Year</h5>
+                    <div id="acled_year">ACLED: {acled_year}</div>
+                    <div id="ucdp_year">UCDP: {ucdp_year}</div>
+                </div>
+            </div>
+        </div>
+        <div id="general">
+            <h5>General</h5>
+            {@html selected_country_details?.general_updates}
+        </div>
+        <div id="peace_process">
+            <h5>Peace Process</h5>
+            {@html selected_country_details?.peace_process_text}
+        </div>
+        <div id="tracker">
+            <h5>Tracker</h5>
+            <div class="content-wrapper">
+                <div class="content-box">
+                    <h5>Tracker</h5>
+                    <div id="tracker_link">
+                        <a href={tracker_link} target="_blank"
+                            ><img
+                                src="../src/assets/pax.png"
+                                alt="pax logo"
+                            /></a
+                        >
+                    </div>
+                </div>
+                <div class="content-box">
+                    <h5>Search PA-X</h5>
+                    <div id="pax_link">
+                        <a href={pax_link} target="_blank"
+                            ><img
+                                src="../src/assets/search.png"
+                                alt="search icon"
+                            /></a
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <style>
+    :root {
+        color-scheme: dark;
+    }
+
     .visualization {
         color: white;
         position: fixed;
@@ -51,9 +109,8 @@
         width: 500px;
         height: calc(100% - 47px);
         transition: right 0.3s ease;
-        background: rgba(32, 32, 32, 0.9);
-        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
-        border-radius: 3px;
+        background: rgb(0, 0, 0);
+        /* box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5); */
         overflow: hidden;
         z-index: 5;
         font-family: "Montserrat";
@@ -87,48 +144,163 @@
     }
 
     #peace_content {
-        flex: 1;
-        height: calc(50% - 40px);
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
         align-items: center;
         position: relative;
         overflow-y: auto;
-        font-size: 14px;
-        background-color: none;
-        margin-left: 5px;
-        margin-right: 5px;
+        font-size: 0.9em;
+        margin: 5px;
         border-radius: 2px;
+        gap: 4px;
+    }
+
+    @media only screen and (max-width: 1450px) {
+        #peace_content {
+            font-size: 0.8em;
+        }
+    }
+
+    @media only screen and (max-width: 1200px) {
+        #peace_content {
+            font-size: 0.8em;
+        }
+    }
+
+    @media only screen and (max-width: 768px) {
+        #peace_content {
+            font-size: 0.8em;
+        }
+    }
+
+    #overview,
+    #tracker {
+        flex-grow: 1;
+        flex-basis: 0;
+        width: 100%;
+        overflow-y: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content-wrapper {
+        flex-grow: 1;
+        display: flex;
+        gap: 5px;
+        padding: 5px;
+        overflow-y: auto;
+        flex-direction: row;
+        align-items: stretch;
+    }
+
+    .content-box {
+        flex-basis: 50%;
+        background: #1a1c25;
+        color: white;
+        padding: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        overflow: hidden; /* Prevent overflow from disrupting layout */
+    }
+
+    .content-box h5 {
+        margin: 0;
+        padding-bottom: 5px;
+    }
+
+    #pax_link a,
+    #tracker_link a {
+        display: block;
+        width: 80%;
+        height: 80%;
+    }
+
+    #pax_link img,
+    #tracker_link img {
+        width: 100%;
+        height: auto; /* Maintain the aspect ratio */
+        max-width: 100%; /* Prevent the image from becoming too large */
+        max-height: 100%;
+        object-fit: contain; /* Ensure the image scales properly without distortion */
+    }
+
+    /* Adjusting the flexbox container to be responsive */
+    #pax_link,
+    #tracker_link {
+        flex-grow: 1; /* Allow these elements to take up the remaining space */
+        display: flex;
+        align-items: center;
+        justify-content: center; /* Center the content */
+        overflow: hidden;
+        cursor: pointer;
+        position: relative; /* Position relative to apply the inset shadow */
+        box-sizing: border-box; /* Ensure padding/border are included in the width/height */
+    }
+
+    /* Hover state for the parent elements */
+    #pax_link:hover,
+    #tracker_link:hover {
+        box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5); /* Inner shadow on hover */
+    }
+    #acled_month,
+    #acled_year,
+    #ucdp_month,
+    #ucdp_year {
+        flex-grow: 1; /* Allow these elements to take up the remaining space */
+        display: flex;
+        align-items: center;
+        justify-content: center; /* Center text if desired */
+        overflow: hidden;
+    }
+
+    #general,
+    #peace_process {
+        flex-grow: 2;
+        flex-basis: 0;
+        width: 100%;
+        overflow-y: auto;
+    }
+
+    /* Style for the h5 titles */
+    h5 {
+        margin: 0;
+        padding: 5px 15px;
+        background-color: #444444;
+        color: white;
+        font-size: 1em;
+        border-bottom: 1px solid #333;
+    }
+
+    @media only screen and (max-width: 768px) {
+        h5 {
+            font-size: 0.9em;
+            padding: 8px 12px;
+        }
     }
 
     #peace_title_div {
         text-align: center;
+        justify-content: center;
         position: relative;
         border-radius: 5px;
     }
 
-    .close {
-        position: absolute;
-        z-index: 5;
-        top: 2px;
-        left: 4px;
-        background: #fdd900;
-        color: black;
-        border: none;
-        padding: 2px 12px;
-        border-radius: 2px;
-        font-size: 20px;
-        cursor: pointer;
-        font-family: "Montserrat";
+    #general,
+    #peace_process,
+    #overview,
+    #tracker {
+        background: #1a1c25;
     }
+
 
     h3 {
         color: white;
         margin: auto;
         font-size: 1.2em;
         padding: 3px;
-    }
-
-    ul {
-        padding: 10px;
     }
 
     @media only screen and (max-width: 1450px) {
@@ -149,64 +321,38 @@
         }
     }
 
-    #chart {
-        flex: 1;
-        display: flex;
-        background-color: #171d26;
-        height: calc(50% - 40px);
-        margin-left: 5px;
-        margin-right: 5px;
-        margin-bottom: 5px;
-        border-radius: 2px;
-    }
-
-    /* width */
-    #peace_content::-webkit-scrollbar {
-        width: 10px;
-    }
-
-    /* Track */
-    #peace_content::-webkit-scrollbar-track {
-        background: #f1f1f1;
-    }
-
-    /* Handle */
-
-    #peace_content::-webkit-scrollbar-thumb {
-        background: #888;
-    }
-
-    /* Handle on hover */
-    #peace_content::-webkit-scrollbar-thumb:hover {
-        background: #555;
-    }
-
-    .btn {
+    .btn.close {
+        position: absolute;
+        left: 4px;
+        top: 2px;
+        background: none;
+        color: #fdd900;
         border: none;
-        box-shadow: none;
+        padding: 2px 12px;
         border-radius: 2px;
-        font-size: 1.1em;
-        font-family: "Montserrat";
-        color: black;
-        padding: 0.2em 1em;
+        font-size: 20px;
         cursor: pointer;
-        background: #fdd92f;
-        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+        font-family: "Montserrat";
+        transition: border 0.3s ease;
+    }
+
+    .btn.close:hover {
+        border: 1px solid #fdd900;
     }
 
     @media only screen and (max-width: 1450px) {
-        .btn {
-            font-size: 1em;
+        .btn.close {
+            font-size: 1.1em;
         }
     }
 
     @media only screen and (max-width: 1024px) {
-        .btn {
-            font-size: 0.9em;
+        .btn.close {
+            font-size: 1em;
         }
     }
 
-    pre {
+    :global(pre) {
         margin-top: 2px;
         margin-bottom: 2px;
         font-family: "Montserrat";
