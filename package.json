@@ -2,11 +2,13 @@
   "name": "vite-project",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://tvancisin.github.io/fatalities_map/",
   "type": "module",
   "scripts": {
-    "build": "vite build",
-    "predeploy": "yarn build",
-    "deploy": "gh-pages -d dist"
+    "predeploy" : "yarn build",
+    "deploy" : "gh-pages -d dist",
+    "dev": "vite",
+    "build": "vite build"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.1.1",

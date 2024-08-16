@@ -34,7 +34,7 @@
     }
   }
 
-  let imageURL = new URL("../assets/agt.png", import.meta.url).href;
+  let imageURL = new URL("../assets/agreement.png", import.meta.url).href;
   let hoveredPolygonId = null;
 
   onMount(() => {
@@ -110,8 +110,8 @@
       //add icons for agreements
       for (const marker of icon_data.features) {
         const el = document.createElement("div");
-        const width = 30;
-        const height = 30;
+        const width = 25;
+        const height = 25;
         el.style.backgroundImage = `url(${imageURL})`;
         el.style.width = `${width}px`;
         el.style.height = `${height}px`;
