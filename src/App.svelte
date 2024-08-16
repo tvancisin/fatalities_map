@@ -11,9 +11,9 @@
   let country_data;
   let icon_data;
   let csv_path = [
-    "../src/assets/data/filled_polygon_data_5.csv",
-    "../src/assets/data/country_data.csv",
-    "../src/assets/data/agt_point_data.csv",
+    "/data/filled_polygon_data_5.csv",
+    "/data/country_data.csv",
+    "/data/agt_point_data.csv",
   ];
   getCSV(csv_path).then((data) => {
     polygon_data = data[0];
@@ -45,7 +45,7 @@
 
   //load geojson
   let mygeojson;
-  const json_path = "../src/assets/data/country_polygons.json";
+  const json_path = "/data/country_polygons.json";
   let scaleHeight = d3.scaleLinear().domain([1, 10000]).range([1, 100000]);
 
   getGeo(json_path).then((geo) => {

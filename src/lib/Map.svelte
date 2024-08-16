@@ -34,7 +34,7 @@
     }
   }
 
-  let imageURL = new URL("../assets/agreement.png", import.meta.url).href;
+  let imageURL = new URL("/agreement.png", import.meta.url).href;
   let hoveredPolygonId = null;
 
   onMount(() => {

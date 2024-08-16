@@ -74,7 +74,7 @@
                     <div id="tracker_link">
                         <a href={tracker_link} target="_blank"
                             ><img
-                                src="../src/assets/pax.png"
+                                src="/pax.png"
                                 alt="pax logo"
                             /></a
                         >
@@ -85,7 +85,7 @@
                     <div id="pax_link">
                         <a href={pax_link} target="_blank"
                             ><img
-                                src="../src/assets/search.png"
+                                src="/search.png"
                                 alt="search icon"
                             /></a
                         >
