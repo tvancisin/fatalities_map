@@ -4,7 +4,8 @@
   import * as d3 from "d3";
   import { getGeo, getCSV } from "./utils";
 
-  let width, height;
+  let width;
+  let height = 500;
 
   //load csv files
   let polygon_data;
