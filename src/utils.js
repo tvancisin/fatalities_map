@@ -14,7 +14,7 @@ export async function getCSV(paths) {
 }
 
 export async function getGeo(url) {
-    let response = await fetch(url);
+    let response = await fetch((import.meta.env.BASE_URL || "") + url);
     let json = await response.json();
     return json;
 }

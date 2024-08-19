@@ -12,6 +12,8 @@
   let current_zoom = 2.5;
 
   function adjustMapForWindowSize() {
+    console.log("here");
+    
     let centerCoordinates = map.getCenter();
     if (window.innerWidth <= 768) {
       current_zoom = 1.4;
@@ -65,9 +67,12 @@
           "fill-extrusion-color": {
             property: "total_fatalities",
             stops: [
-              [100, "#FF8000"],
-              [10000, "#892D02"],
+              [100, "#E58344"],
+              [10000, "#973102"],
               [100000, "#4E0303"],
+              // [100, "#e6999a"],
+              // [10000, "#b82e30"],
+              // [100000, "#521415"],
             ],
           },
           "fill-extrusion-height": [
@@ -120,9 +125,16 @@
 
         el.addEventListener("mouseover", () => {
           // Create the popup and assign it to the popup variable
-          popup = new mapboxgl.Popup({ closeOnClick: false, closeButton: false })
+          popup = new mapboxgl.Popup({
+            closeOnClick: false,
+            closeButton: false,
+          })
             .setLngLat(marker.geometry.coordinates)
-            .setHTML(`<p style="color: black; font-size: 12px;">` + marker.properties.tooltip + `</p>`)
+            .setHTML(
+              `<p style="color: black; font-size: 12px;">` +
+                marker.properties.tooltip +
+                `</p>`,
+            )
             .addTo(map);
         });
 
@@ -137,6 +149,7 @@
           .setLngLat(marker.geometry.coordinates)
           .addTo(map);
       }
+
 
       map.on("click", "countries-layer", (e) => {
         let clicked_country = e.features[0].properties.ADMIN;
@@ -206,8 +219,9 @@
         hoveredPolygonId = null;
       });
     });
-    window.addEventListener("load", adjustMapForWindowSize);
-    window.addEventListener("resize", adjustMapForWindowSize);
+
+      adjustMapForWindowSize();
+      window.addEventListener("resize", adjustMapForWindowSize);
   });
 
   function flyToInitialPosition() {

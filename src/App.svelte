@@ -15,7 +15,9 @@
     "./data/country_data.csv",
     "./data/agt_point_data.csv",
   ];
+
   getCSV(csv_path).then((data) => {
+    
     polygon_data = data[0];
     country_data = data[1];
 
