@@ -111,6 +111,10 @@
     width: 100vw;
     height: 100vh;
     font-family: "Montserrat";
+    position: relative; /* Ensure child elements are positioned relative to the main */
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   h1 {

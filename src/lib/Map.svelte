@@ -13,7 +13,7 @@
 
   function adjustMapForWindowSize() {
     console.log("here");
-    
+
     let centerCoordinates = map.getCenter();
     if (window.innerWidth <= 768) {
       current_zoom = 1.4;
@@ -150,7 +150,6 @@
           .addTo(map);
       }
 
-
       map.on("click", "countries-layer", (e) => {
         let clicked_country = e.features[0].properties.ADMIN;
         const properties = e.features[0].properties;
@@ -220,8 +219,8 @@
       });
     });
 
-      adjustMapForWindowSize();
-      window.addEventListener("resize", adjustMapForWindowSize);
+    adjustMapForWindowSize();
+    window.addEventListener("resize", adjustMapForWindowSize);
   });
 
   function flyToInitialPosition() {
@@ -231,9 +230,25 @@
   export { flyToInitialPosition };
 </script>
 
-<div id="map" bind:this={map} style="width: 100%; height: 100vh;"></div>
+<div class="map-container">
+  <div id="map" bind:this={map} style="width: 100%; height: 100vh;"></div>
+</div>
 
 <style>
+  .map-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  #map {
+    width: 100%;
+    height: 100%;
+  }
+
   div {
     position: absolute;
     top: 0;
