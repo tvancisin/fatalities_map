@@ -7,6 +7,8 @@
 
     const dispatch = createEventDispatcher();
 
+    //colors of the map: #1a1a1a (land) #263852 (water)
+
     export let selected_country_details;
     let details_width;
     let details_height;
@@ -33,7 +35,37 @@
         tracker_link,
         pax_link,
         gpi,
-        cpi;
+        cpi,
+        number_of_agreements,
+        rectSize = 5,
+        vis_height,
+        gap = 2;
+
+    let x_y_rectangles = [];
+    let agts;
+
+    function calculateRectanglesPerRow() {
+        return Math.floor((vis_width + gap) / (rectSize + gap));
+    }
+
+    // Generate rectangles arranged in rows with gaps
+    function generateRectangles(rect) {
+        console.log("here");
+        x_y_rectangles = [];
+        const rectsPerRow = calculateRectanglesPerRow();
+        const totalRows = Math.ceil(rect / rectsPerRow);
+        vis_height = totalRows * (rectSize + gap) - gap; // adjust height
+
+        for (let i = 0; i < rect; i++) {
+            const col = i % rectsPerRow; // column position
+            const row = Math.floor(i / rectsPerRow); // row position
+
+            const x = col * (rectSize + gap);
+            const y = row * (rectSize + gap);
+
+            x_y_rectangles.push({ x, y });
+        }
+    }
 
     $: if (selected_country_details) {
         //populate acled data
@@ -61,9 +93,16 @@
             tracker_link = "https://pax.peaceagreements.org/tracker/all/";
         }
         pax_link = selected_country_details.search_pax;
+
+        //agreements
+        agts = selected_country_details.total_agreements;
     }
 
-    $: console.log(selected_country_details, tracker_link);
+    $: generateRectangles(agts);
+    $: if (vis_width || agts) {
+        generateRectangles(agts);
+    }
+    $: console.log(x_y_rectangles);
 
     function closeVisualization() {
         dispatch("close");
@@ -87,9 +126,9 @@
             <h5>Overview</h5>
             <div class="content-wrapper">
                 <div class="content-box">
-                    <h5 style="background-color: #2a2a2a">
+                    <h6 style="background-color: #1A1A1A; text-align: center">
                         Fatalities Last Month
-                    </h5>
+                    </h6>
                     <div class="row">
                         <div id="acled_month">ACLED: {acled_month}</div>
                         <div id="acled_m_change" class="tooltip-container">
@@ -120,9 +159,9 @@
                     </div>
                 </div>
                 <div class="content-box">
-                    <h5 style="background-color: #2a2a2a">
+                    <h6 style="background-color: #1A1A1A; text-align: center">
                         Fatalities Last Year
-                    </h5>
+                    </h6>
                     <div class="row">
                         <div id="acled_year">ACLED: {acled_year}</div>
                         <div id="acled_y_change" class="tooltip-container">
@@ -158,7 +197,9 @@
         <div id="general">
             <h5>General</h5>
             <div class="scrollable-content">
-                <p style="margin-bottom: 5px;">Global Peace Index Ranking:</p>
+                <p style="margin-bottom: 5px; text-align: center">
+                    Global Peace Index Ranking:
+                </p>
                 <div id="gpi" bind:clientWidth={vis_width}>
                     <svg height="45px" width={vis_width}>
                         <defs>
@@ -212,7 +253,7 @@
                 </div>
                 <br />
 
-                <p style="margin-bottom: 5px;">
+                <p style="margin-bottom: 5px; text-align: center">
                     Corruption Perception Index Ranking:
                 </p>
                 <div id="cpi">
@@ -275,6 +316,20 @@
         <div id="peace_process">
             <h5>Peace Process</h5>
             <div class="scrollable-content">
+                <p style="margin-bottom: 10px; text-align: center">
+                    {agts} Peace Agreements:
+                </p>
+                <svg height="25px" width={vis_width}>
+                    {#each x_y_rectangles as rect (rect.x + "-" + rect.y)}
+                        <rect
+                            x={rect.x}
+                            y={rect.y}
+                            width={rectSize}
+                            height={rectSize}
+                            fill="#f0eee3"
+                        />
+                    {/each}
+                </svg>
                 {@html selected_country_details?.peace_process_text}
             </div>
         </div>
@@ -282,7 +337,9 @@
             <h5>Additional Information</h5>
             <div class="content-wrapper">
                 <div class="content-box">
-                    <h5 style="background-color: #2a2a2a">Tracker</h5>
+                    <h6 style="background-color: #1A1A1A; text-align: center">
+                        Tracker
+                    </h6>
                     <div id="tracker_link">
                         <a href={tracker_link} target="_blank"
                             ><img src="./pax.png" alt="pax logo" /></a
@@ -290,7 +347,9 @@
                     </div>
                 </div>
                 <div class="content-box">
-                    <h5 style="background-color: #2a2a2a">Search PA-X</h5>
+                    <h6 style="background-color: #1A1A1A; text-align: center">
+                        Search PA-X
+                    </h6>
                     <div id="pax_link">
                         <a href={pax_link} target="_blank"
                             ><img src="./search.png" alt="search icon" /></a
@@ -308,7 +367,7 @@
     }
 
     .visualization {
-        color: white;
+        color: #f0eee3;
         position: fixed;
         right: -100%;
         bottom: 4px;
@@ -318,7 +377,10 @@
         background: rgb(0, 0, 0);
         overflow: hidden;
         z-index: 5;
-        font-family: "Montserrat";
+        font-family: "Montserrat", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-style: normal;
         display: flex;
         flex-direction: column;
     }
@@ -358,7 +420,7 @@
         font-size: 0.9em;
         margin: 5px;
         border-radius: 2px;
-        gap: 4px;
+        gap: 6px;
     }
 
     @media only screen and (max-width: 1450px) {
@@ -381,18 +443,20 @@
 
     #general,
     #peace_process {
-        background: #1a1c25;
+        background: #444444;
         flex-grow: 2;
         flex-basis: 0;
         width: 100%;
         overflow-y: auto;
         display: flex;
         flex-direction: column;
+        line-height: 1.5;
+
     }
 
     #overview,
     #tracker {
-        background: #1a1c25;
+        background: #444444;
         flex-grow: 1;
         flex-basis: 0;
         width: 100%;
@@ -405,13 +469,53 @@
     #peace_process,
     #overview,
     #tracker {
-        background: #1a1c25;
+        background: #1a1a1a;
+        border-radius: 3px;
     }
 
     #overview h5,
-    #general h5 {
-        background-color: #444444; /* Ensure headers have a background */
-        z-index: 2; /* Ensure they stay above other content */
+    #general h5,
+    #peace_process h5,
+    #tracker h5 {
+        background-color: #292929;
+        z-index: 2;
+        /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); */
+    }
+
+    h5 {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        margin: 0;
+        padding: 5px 15px;
+        color: #f0eee3;
+        font-size: 1em;
+        font-weight: 400;
+    }
+
+    @media only screen and (max-width: 768px) {
+        h5 {
+            font-size: 0.9em;
+            padding: 3px 10px;
+        }
+    }
+
+    h6 {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        margin: 0;
+        padding: 5px 15px;
+        color: #f0eee3;
+        font-size: 0.9em;
+        font-weight: 400;
+    }
+
+    @media only screen and (max-width: 768px) {
+        h6 {
+            font-size: 0.8em;
+            padding: 2px 10px;
+        }
     }
 
     .content-wrapper {
@@ -424,13 +528,26 @@
         align-items: stretch;
     }
 
+    .content-box {
+        flex-basis: 50%;
+        background: #1a1a1a;
+        color: white;
+        padding: 5px;
+        /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8); */
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        /* overflow: hidden; Prevent overflow from disrupting layout */
+        overflow: visible;
+    }
+
     /* Add this CSS to the existing style */
     .row {
         display: flex;
         flex-grow: 1;
         justify-content: space-between;
         align-items: center;
-        gap: 10px;
+        /* gap: 10px; */
     }
 
     .row > div {
@@ -477,19 +594,6 @@
         opacity: 1;
     }
 
-    .content-box {
-        flex-basis: 50%;
-        background: #1a1c25;
-        color: white;
-        padding: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-        display: flex;
-        flex-direction: column;
-        box-sizing: border-box;
-        /* overflow: hidden; Prevent overflow from disrupting layout */
-        overflow: visible;
-    }
-
     #pax_link a,
     #tracker_link a {
         display: block;
@@ -522,7 +626,7 @@
     /* Hover state for the parent elements */
     #pax_link:hover,
     #tracker_link:hover {
-        box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5); /* Inner shadow on hover */
+        box-shadow: inset 0 0 5px rgb(107, 107, 107); /* Inner shadow on hover */
     }
 
     #acled_month,
@@ -554,24 +658,6 @@
         box-sizing: border-box;
     }
 
-    h5 {
-        position: sticky; /* Make header sticky */
-        top: 0; /* Stick to the top of the parent */
-        z-index: 1; /* Ensure it stays on top of scrollable content */
-        margin: 0;
-        padding: 2px 15px;
-        background-color: #444444;
-        color: white;
-        font-size: 1em;
-    }
-
-    @media only screen and (max-width: 768px) {
-        h5 {
-            font-size: 0.9em;
-            padding: 8px 12px;
-        }
-    }
-
     #peace_title_div {
         text-align: center;
         justify-content: center;
@@ -580,10 +666,11 @@
     }
 
     h3 {
-        color: white;
+        color: #f0eee3;
         margin: auto;
         font-size: 1.2em;
         padding: 3px;
+        font-weight: 350;
     }
 
     @media only screen and (max-width: 1450px) {
@@ -609,18 +696,18 @@
         left: 4px;
         top: 2px;
         background: none;
-        color: #fdd900;
+        color: #e59b4e;
         border: none;
-        padding: 2px 12px;
+        padding: 2px 10px;
         border-radius: 2px;
-        font-size: 20px;
+        font-size: 22px;
         cursor: pointer;
         font-family: "Montserrat";
         transition: border 0.3s ease;
     }
 
     .btn.close:hover {
-        border: 1px solid #fdd900;
+        border: 1px solid #e59b4e;
     }
 
     @media only screen and (max-width: 1450px) {
@@ -632,30 +719,6 @@
     @media only screen and (max-width: 1024px) {
         .btn.close {
             font-size: 1em;
-        }
-    }
-
-    :global(pre) {
-        margin-top: 2px;
-        margin-bottom: 2px;
-        font-family: "Montserrat";
-        direction: ltr;
-        text-align: left;
-        padding-left: 15px;
-        padding-right: 15px;
-        font-size: 0.9em;
-        white-space: pre-wrap;
-    }
-
-    @media only screen and (max-width: 1450px) {
-        pre {
-            font-size: 0.75em;
-        }
-    }
-
-    @media only screen and (max-width: 1024px) {
-        pre {
-            font-size: 0.63em;
         }
     }
 

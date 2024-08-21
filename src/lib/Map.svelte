@@ -2,17 +2,19 @@
   import { onMount, createEventDispatcher } from "svelte";
   import mapboxgl from "mapbox-gl";
   import * as turf from "turf";
+  import * as d3 from "d3";
 
   const dispatch = createEventDispatcher();
 
   export let mygeojson;
   export let icon_data;
 
+  let height;
   let map;
   let current_zoom = 2.5;
 
+
   function adjustMapForWindowSize() {
-    console.log("here");
 
     let centerCoordinates = map.getCenter();
     if (window.innerWidth <= 768) {
@@ -44,8 +46,8 @@
       "pk.eyJ1Ijoic2FzaGFnYXJpYmFsZHkiLCJhIjoiY2xyajRlczBlMDhqMTJpcXF3dHJhdTVsNyJ9.P_6mX_qbcbxLDS1o_SxpFg";
     map = new mapboxgl.Map({
       container: map,
+      attributionControl: false,
       style: "mapbox://styles/sashagaribaldy/clxstrxes00qv01pf8dgl4o20",
-      // style: "mapbox://styles/mapbox/light-v11",
       center: [50.224518, 22.213995],
       zoom: 2.5,
       maxZoom: 5,
@@ -70,9 +72,9 @@
               [100, "#E58344"],
               [10000, "#973102"],
               [100000, "#4E0303"],
-              // [100, "#e6999a"],
-              // [10000, "#b82e30"],
-              // [100000, "#521415"],
+              // [100, "#9F4544"],
+              // [10000, "#721B1B"],
+              // [100000, "#290a0a"],
             ],
           },
           "fill-extrusion-height": [
@@ -217,8 +219,10 @@
         }
         hoveredPolygonId = null;
       });
+      dispatch("mapLoaded")
     });
 
+    
     adjustMapForWindowSize();
     window.addEventListener("resize", adjustMapForWindowSize);
   });
@@ -230,8 +234,8 @@
   export { flyToInitialPosition };
 </script>
 
-<div class="map-container">
-  <div id="map" bind:this={map} style="width: 100%; height: 100vh;"></div>
+<div class="map-container" bind:clientHeight={height} >
+  <div id="map" bind:this={map} ></div>
 </div>
 
 <style>
