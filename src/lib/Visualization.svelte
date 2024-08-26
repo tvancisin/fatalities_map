@@ -45,12 +45,11 @@
     let agts;
 
     function calculateRectanglesPerRow() {
-        return Math.floor((vis_width + gap) / (rectSize + gap));
+        return Math.floor((vis_width - 10 + gap) / (rectSize + gap));
     }
 
     // Generate rectangles arranged in rows with gaps
     function generateRectangles(rect) {
-        console.log("here");
         x_y_rectangles = [];
         const rectsPerRow = calculateRectanglesPerRow();
         const totalRows = Math.ceil(rect / rectsPerRow);
@@ -96,13 +95,14 @@
 
         //agreements
         agts = selected_country_details.total_agreements;
+        console.log(selected_country_details);
+        
     }
 
     $: generateRectangles(agts);
     $: if (vis_width || agts) {
         generateRectangles(agts);
     }
-    $: console.log(x_y_rectangles);
 
     function closeVisualization() {
         dispatch("close");
@@ -118,7 +118,21 @@
         <button class="btn close" on:click={closeVisualization}
             ><i class="fa fa-close"></i></button
         >
-        <h3>Peace Process</h3>
+        <div id="tracker_link">
+            <a href={tracker_link} target="_blank"
+                ><img src="./pax.png" alt="pax logo" /></a
+            >
+            <span class="tooltip-text">Search PA-X Tracker</span>
+        </div>
+        <div id="pax_link">
+            <a href={pax_link} target="_blank"
+                ><img src="./search.png" alt="search icon" /></a
+            >
+            <span class="tooltip-text">Search PA-X Database</span>
+        </div>
+        {#if selected_country_details}
+            <h3>{selected_country_details.name}</h3>
+        {/if}
     </div>
 
     <div id="peace_content">
@@ -126,9 +140,7 @@
             <h5>Overview</h5>
             <div class="content-wrapper">
                 <div class="content-box">
-                    <h6 style="background-color: #1A1A1A; text-align: center">
-                        Fatalities Last Month
-                    </h6>
+                    <h6>Fatalities Last Month</h6>
                     <div class="row">
                         <div id="acled_month">ACLED: {acled_month}</div>
                         <div id="acled_m_change" class="tooltip-container">
@@ -159,15 +171,13 @@
                     </div>
                 </div>
                 <div class="content-box">
-                    <h6 style="background-color: #1A1A1A; text-align: center">
-                        Fatalities Last Year
-                    </h6>
+                    <h6>Fatalities Last Year</h6>
                     <div class="row">
                         <div id="acled_year">ACLED: {acled_year}</div>
                         <div id="acled_y_change" class="tooltip-container">
                             {#if acled_year_change > 0}
                                 <FontAwesomeIcon icon={faArrowUp} />
-                            {:else if ucdp_month_change < 0}
+                            {:else if acled_year_change < 0}
                                 <FontAwesomeIcon icon={faArrowDown} />
                             {/if}
                             {acled_year_change}
@@ -181,7 +191,7 @@
                         <div id="ucdp_y_change" class="tooltip-container">
                             {#if ucdp_year_change > 0}
                                 <FontAwesomeIcon icon={faArrowUp} />
-                            {:else if ucdp_month_change < 0}
+                            {:else if ucdp_year_change < 0}
                                 <FontAwesomeIcon icon={faArrowDown} />
                             {/if}
                             <span class="tooltip-text"
@@ -197,7 +207,9 @@
         <div id="general">
             <h5>General</h5>
             <div class="scrollable-content">
-                <p style="margin-bottom: 5px; text-align: center">
+                <p
+                    style="margin-bottom: 0px; margin-top: 5px; text-align: center; font-weight: 400"
+                >
                     Global Peace Index Ranking:
                 </p>
                 <div id="gpi" bind:clientWidth={vis_width}>
@@ -222,7 +234,7 @@
                             y1="0"
                             x2={gpi_scaling(gpi)}
                             y2="30"
-                            stroke="black"
+                            stroke="white"
                             stroke-width="1"
                         />
                         <text
@@ -238,22 +250,25 @@
                         <text
                             x="5"
                             y="40"
-                            fill="white"
+                            fill="black"
                             font-size="10"
+                            font-weight="500"
                             text-anchor="start">more peaceful</text
                         >
                         <text
                             x={vis_width}
                             y="40"
-                            fill="white"
+                            fill="black"
                             font-size="10"
+                            font-weight="500"
                             text-anchor="end">less peaceful</text
                         >
                     </svg>
                 </div>
-                <br />
 
-                <p style="margin-bottom: 5px; text-align: center">
+                <p
+                    style="margin-bottom: 0px; margin-top: 15px; text-align: center; font-weight: 400"
+                >
                     Corruption Perception Index Ranking:
                 </p>
                 <div id="cpi">
@@ -278,7 +293,7 @@
                             y1="0"
                             x2={cpi_scaling(cpi)}
                             y2="30"
-                            stroke="black"
+                            stroke="white"
                             stroke-width="1"
                         />
                         <text
@@ -294,15 +309,17 @@
                         <text
                             x="5"
                             y="40"
-                            fill="white"
+                            fill="black"
                             font-size="10"
+                            font-weight="500"
                             text-anchor="start">less corrupt</text
                         >
                         <text
                             x={vis_width}
                             y="40"
-                            fill="white"
+                            fill="black"
                             font-size="10"
+                            font-weight="500"
                             text-anchor="end">more corrupt</text
                         >
                     </svg>
@@ -310,34 +327,36 @@
 
                 <br />
 
-                {@html selected_country_details?.general_updates}
+                {@html selected_country_details?.sm_general_updates}
             </div>
         </div>
         <div id="peace_process">
             <h5>Peace Process</h5>
             <div class="scrollable-content">
-                <p style="margin-bottom: 10px; text-align: center">
+                <p
+                    style="margin-bottom: 10px; text-align: center; font-weight: 400"
+                >
                     {agts} Peace Agreements:
                 </p>
-                <svg height="25px" width={vis_width}>
+                <svg height="25px" width={vis_width - 5}>
                     {#each x_y_rectangles as rect (rect.x + "-" + rect.y)}
                         <rect
                             x={rect.x}
                             y={rect.y}
                             width={rectSize}
                             height={rectSize}
-                            fill="#f0eee3"
+                            fill="black"
                         />
                     {/each}
                 </svg>
                 {@html selected_country_details?.peace_process_text}
             </div>
         </div>
-        <div id="tracker">
+        <!-- <div id="tracker">
             <h5>Additional Information</h5>
             <div class="content-wrapper">
                 <div class="content-box">
-                    <h6 style="background-color: #1A1A1A; text-align: center">
+                    <h6 style="text-align: center">
                         Tracker
                     </h6>
                     <div id="tracker_link">
@@ -347,7 +366,7 @@
                     </div>
                 </div>
                 <div class="content-box">
-                    <h6 style="background-color: #1A1A1A; text-align: center">
+                    <h6 style="text-align: center">
                         Search PA-X
                     </h6>
                     <div id="pax_link">
@@ -357,7 +376,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
 
@@ -367,14 +386,14 @@
     }
 
     .visualization {
-        color: #f0eee3;
+        color: black;
         position: fixed;
+        border-radius: 2px;
         right: -100%;
-        bottom: 4px;
         width: 500px;
-        height: calc(100% - 47px);
+        height: calc(100%);
         transition: right 0.3s ease;
-        background: rgb(0, 0, 0);
+        background-color: rgba(80, 80, 80, 0.932);
         overflow: hidden;
         z-index: 5;
         font-family: "Montserrat", sans-serif;
@@ -383,34 +402,85 @@
         font-style: normal;
         display: flex;
         flex-direction: column;
+        z-index: 11;
     }
 
     @media (max-width: 1450px) {
         .visualization {
             width: 450px;
-            height: calc(100% - 41px);
-            bottom: 3px;
         }
     }
 
     @media (max-width: 1200px) {
         .visualization {
             width: 400px;
-            height: calc(100% - 35px);
-            bottom: 2px;
         }
     }
 
     @media (max-width: 768px) {
         .visualization {
             width: 100%;
-            height: calc(100% - 32px);
-            bottom: 2px;
-            font-size: 0.8em;
+        }
+    }
+
+    h3 {
+        color: rgb(255, 255, 255);
+        margin: auto;
+        font-size: 1.3em;
+        padding: 3px;
+        font-weight: 450;
+    }
+
+    @media only screen and (max-width: 1450px) {
+        h3 {
+            font-size: 1.1em;
+        }
+    }
+
+    @media only screen and (max-width: 1200px) {
+        h3 {
+            font-size: 1em;
+        }
+    }
+
+    @media only screen and (max-width: 768px) {
+        h3 {
+            font-size: 0.9em;
+        }
+    }
+
+    .btn.close {
+        position: absolute;
+        right: 4px;
+        background: none;
+        color: white;
+        border: none;
+        padding: 2px 10px;
+        border-radius: 2px;
+        font-size: 22px;
+        cursor: pointer;
+        font-family: "Montserrat";
+        transition: border 0.3s ease;
+    }
+
+    .btn.close:hover {
+        border: 1px solid black;
+    }
+
+    @media only screen and (max-width: 1450px) {
+        .btn.close {
+            font-size: 1.1em;
+        }
+    }
+
+    @media only screen and (max-width: 1024px) {
+        .btn.close {
+            font-size: 1em;
         }
     }
 
     #peace_content {
+        height: 100%; /* Ensure that #peace_content takes full available height */
         flex-grow: 1;
         display: flex;
         flex-direction: column;
@@ -418,7 +488,10 @@
         position: relative;
         overflow-y: auto;
         font-size: 0.9em;
-        margin: 5px;
+        margin-top: 0px;
+        margin-right: 5px;
+        margin-left: 5px;
+        margin-bottom: 5px;
         border-radius: 2px;
         gap: 6px;
     }
@@ -441,23 +514,52 @@
         }
     }
 
+    #pax_link a,
+    #tracker_link a {
+        width: 80%;
+        height: 80%;
+    }
+
+    #pax_link img,
+    #tracker_link img {
+        height: auto; /* Maintain the aspect ratio */
+        max-height: 100%;
+        object-fit: contain; /* Ensure the image scales properly without distortion */
+    }
+
+    /* Adjusting the flexbox container to be responsive */
+    #pax_link,
+    #tracker_link {
+        position: absolute;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    #pax_link {
+        left: 5px;
+    }
+
+    #tracker_link {
+        left: 35px;
+    }
+
+    /* Hover state for the parent elements */
+    #pax_link:hover,
+    #tracker_link:hover {
+        box-shadow: inset 0 0 5px rgb(139, 139, 139);
+    }
+
     #general,
     #peace_process {
-        background: #444444;
-        flex-grow: 2;
         flex-basis: 0;
         width: 100%;
         overflow-y: auto;
         display: flex;
         flex-direction: column;
         line-height: 1.5;
-
     }
 
-    #overview,
-    #tracker {
-        background: #444444;
-        flex-grow: 1;
+    #overview {
         flex-basis: 0;
         width: 100%;
         overflow-y: auto;
@@ -467,19 +569,32 @@
 
     #general,
     #peace_process,
-    #overview,
-    #tracker {
-        background: #1a1a1a;
+    #overview {
+        background: white;
         border-radius: 3px;
     }
 
     #overview h5,
     #general h5,
-    #peace_process h5,
-    #tracker h5 {
-        background-color: #292929;
+    #peace_process h5 {
+        background-color: #d9d9d9;
         z-index: 2;
-        /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); */
+        box-shadow: 0 2px 3px rgba(117, 117, 117, 0.8);
+    }
+
+    #overview,
+    #general,
+    #peace_process {
+        flex-shrink: 0; /* Prevent shrinking of these elements */
+    }
+
+    #overview {
+        flex-grow: 1; /* Takes one unit of the available space */
+    }
+
+    #general,
+    #peace_process {
+        flex-grow: 3; /* Takes three units of the available space each */
     }
 
     h5 {
@@ -488,9 +603,9 @@
         z-index: 1;
         margin: 0;
         padding: 5px 15px;
-        color: #f0eee3;
+        color: black;
         font-size: 1em;
-        font-weight: 400;
+        font-weight: 450;
     }
 
     @media only screen and (max-width: 768px) {
@@ -502,13 +617,14 @@
 
     h6 {
         position: sticky;
+        text-align: center;
         top: 0;
         z-index: 1;
         margin: 0;
-        padding: 5px 15px;
-        color: #f0eee3;
+        padding: 2px 15px;
+        color: black;
         font-size: 0.9em;
-        font-weight: 400;
+        font-weight: 450;
     }
 
     @media only screen and (max-width: 768px) {
@@ -530,9 +646,9 @@
 
     .content-box {
         flex-basis: 50%;
-        background: #1a1a1a;
-        color: white;
-        padding: 5px;
+        background: white;
+        color: black;
+        padding: 2px;
         /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8); */
         display: flex;
         flex-direction: column;
@@ -547,6 +663,7 @@
         flex-grow: 1;
         justify-content: space-between;
         align-items: center;
+        font-weight: 450;
         /* gap: 10px; */
     }
 
@@ -570,7 +687,7 @@
         padding: 5px;
         position: absolute;
         z-index: 10;
-        bottom: 125%;
+        bottom: 100%;
         left: 50%;
         transform: translateX(-50%);
         opacity: 0;
@@ -578,55 +695,35 @@
         font-size: 0.8em;
     }
 
-    .tooltip-container .tooltip-text::after {
-        content: "";
+    #tracker_link .tooltip-text,
+    #pax_link .tooltip-text {
+        visibility: hidden;
+        width: 80px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
         position: absolute;
-        top: 100%;
-        left: 50%;
+        z-index: 10;
+        top: 125%;
+        left: 170%;
         transform: translateX(-50%);
-        border-width: 5px;
-        border-style: solid;
-        border-color: #555 transparent transparent transparent;
+        opacity: 0;
+        transition: opacity 0.3s;
+        font-size: 0.8em;
     }
+
 
     .tooltip-container:hover .tooltip-text {
         visibility: visible;
         opacity: 1;
     }
 
-    #pax_link a,
-    #tracker_link a {
-        display: block;
-        width: 80%;
-        height: 80%;
-    }
-
-    #pax_link img,
-    #tracker_link img {
-        width: 100%;
-        height: auto; /* Maintain the aspect ratio */
-        max-width: 100%; /* Prevent the image from becoming too large */
-        max-height: 100%;
-        object-fit: contain; /* Ensure the image scales properly without distortion */
-    }
-
-    /* Adjusting the flexbox container to be responsive */
-    #pax_link,
-    #tracker_link {
-        flex-grow: 1; /* Allow these elements to take up the remaining space */
-        display: flex;
-        align-items: center;
-        justify-content: center; /* Center the content */
-        overflow: hidden;
-        cursor: pointer;
-        position: relative; /* Position relative to apply the inset shadow */
-        box-sizing: border-box; /* Ensure padding/border are included in the width/height */
-    }
-
-    /* Hover state for the parent elements */
-    #pax_link:hover,
-    #tracker_link:hover {
-        box-shadow: inset 0 0 5px rgb(107, 107, 107); /* Inner shadow on hover */
+    #tracker_link:hover .tooltip-text,
+    #pax_link:hover .tooltip-text {
+        visibility: visible;
+        opacity: 1;
     }
 
     #acled_month,
@@ -638,6 +735,19 @@
         align-items: center;
         justify-content: center; /* Center text if desired */
         overflow: hidden;
+    }
+
+    @media only screen and (max-width: 768px) {
+        #acled_month,
+        #acled_m_change,
+        #acled_year,
+        #acled_y_change,
+        #ucdp_month,
+        #ucdp_m_change,
+        #ucdp_year,
+        #ucdp_y_change {
+            font-size: 0.8em;
+        }
     }
 
     #gpi,
@@ -653,83 +763,27 @@
     .scrollable-content {
         flex-grow: 1;
         overflow-y: auto;
-        padding: 10px 15px;
+        padding: 2px 15px;
         background: none;
         box-sizing: border-box;
     }
 
     #peace_title_div {
         text-align: center;
-        justify-content: center;
         position: relative;
-        border-radius: 5px;
-    }
-
-    h3 {
-        color: #f0eee3;
-        margin: auto;
-        font-size: 1.2em;
-        padding: 3px;
-        font-weight: 350;
-    }
-
-    @media only screen and (max-width: 1450px) {
-        h3 {
-            font-size: 1.1em;
-        }
-    }
-
-    @media only screen and (max-width: 1200px) {
-        h3 {
-            font-size: 1em;
-        }
-    }
-
-    @media only screen and (max-width: 768px) {
-        h3 {
-            font-size: 0.9em;
-        }
-    }
-
-    .btn.close {
-        position: absolute;
-        left: 4px;
-        top: 2px;
-        background: none;
-        color: #e59b4e;
-        border: none;
-        padding: 2px 10px;
-        border-radius: 2px;
-        font-size: 22px;
-        cursor: pointer;
-        font-family: "Montserrat";
-        transition: border 0.3s ease;
-    }
-
-    .btn.close:hover {
-        border: 1px solid #e59b4e;
-    }
-
-    @media only screen and (max-width: 1450px) {
-        .btn.close {
-            font-size: 1.1em;
-        }
-    }
-
-    @media only screen and (max-width: 1024px) {
-        .btn.close {
-            font-size: 1em;
-        }
+        margin: 1px;
     }
 
     :global(a) {
-        color: yellow;
+        color: rgb(110, 122, 177);
         cursor: pointer;
     }
 
     :global(ul) {
-        padding: 10px;
+        padding-left: 20px;
+        padding-right: 10px;
         margin: 0px;
+        font-weight: 400;
     }
 
     #rect1 {
@@ -737,13 +791,13 @@
     }
 
     .stop1 {
-        stop-color: #e8d4cc;
+        stop-color: gray;
     }
     .stop2 {
-        stop-color: #f39267;
+        stop-color: rgb(59, 59, 59);
     }
     .stop3 {
-        stop-color: #ff501b;
+        stop-color: black;
     }
 
     #rect2 {
@@ -751,12 +805,12 @@
     }
 
     .stop11 {
-        stop-color: #dadff1;
+        stop-color: gray;
     }
     .stop22 {
-        stop-color: #6c7ec6;
+        stop-color: rgb(59, 59, 59);
     }
     .stop33 {
-        stop-color: #242f5c;
+        stop-color: black;
     }
 </style>
