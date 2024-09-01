@@ -33,14 +33,14 @@
 
 <style>
     .information {
-        color: #f0eee3;
+        color: black;
         position: fixed;
+        border-radius: 2px;
         right: -100%;
-        bottom: 4px;
         width: 500px;
-        height: calc(100% - 47px);
+        height: calc(100%);
         transition: right 0.3s ease;
-        background: rgb(0, 0, 0);
+        background-color: rgba(247, 247, 247, 0.932);
         overflow: hidden;
         z-index: 5;
         font-family: "Montserrat", sans-serif;
@@ -49,29 +49,26 @@
         font-style: normal;
         display: flex;
         flex-direction: column;
+        z-index: 11;
     }
+
+    
 
     @media (max-width: 1450px) {
         .information {
             width: 450px;
-            height: calc(100% - 41px);
-            bottom: 3px;
         }
     }
 
     @media (max-width: 1200px) {
         .information {
             width: 400px;
-            height: calc(100% - 35px);
-            bottom: 2px;
         }
     }
 
     @media (max-width: 768px) {
         .information {
             width: 100%;
-            height: calc(100% - 32px);
-            bottom: 2px;
             font-size: 0.8em;
         }
     }
@@ -84,7 +81,7 @@
     }
 
     h3 {
-        color: #f0eee3;
+        color: black;
         margin: auto;
         font-size: 1.2em;
         padding: 3px;
@@ -122,6 +119,7 @@
         border-radius: 2px;
         gap: 6px;
         line-height: 1.5;
+        font-weight: 400;
     }
 
     @media only screen and (max-width: 1450px) {
@@ -144,10 +142,9 @@
 
     .btn.close {
         position: absolute;
-        left: 4px;
-        top: 2px;
+        right: 4px;
         background: none;
-        color: #e59b4e;
+        color: black;
         border: none;
         padding: 2px 10px;
         border-radius: 2px;

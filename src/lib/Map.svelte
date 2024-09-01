@@ -50,8 +50,8 @@
     map = new mapboxgl.Map({
       container: map,
       attributionControl: false,
-      // style: "mapbox://styles/sashagaribaldy/clxstrxes00qv01pf8dgl4o20",
-      style: "mapbox://styles/mapbox/light-v11",
+      style: "mapbox://styles/sashagaribaldy/cm0az6qe200pf01phd16v6qm0",
+      // style: "mapbox://styles/mapbox/light-v11",
       center: [50.224518, 22.213995],
       zoom: 2.5,
       maxZoom: 5,
@@ -70,7 +70,8 @@
         type: "fill",
         source: "no_fatalities",
         paint: {
-          "fill-color": "#dda3a2",
+          // "fill-color": "#dda3a2",
+          "fill-color": "#898989",
           "fill-opacity": 0.8,
           // "fill-opacity": [
           //   "case",
@@ -87,12 +88,12 @@
         source: "no_fatalities",
         layout: {},
         paint: {
-          "line-color": "gray",
+          "line-color": "black",
           "line-width": [
             "case",
             ["boolean", ["feature-state", "hover"], false],
-            2,
             1,
+            0,
           ],
         },
       });
@@ -254,30 +255,30 @@
           .addTo(map);
       }
 
-      // map.addSource("country-centroids", {
-      //   type: "geojson",
-      //   data: labels_geojson,
-      // });
+      map.addSource("country-centroids", {
+        type: "geojson",
+        data: labels_geojson,
+      });
 
-      // map.addLayer({
-      //   id: "country-labels",
-      //   type: "symbol",
-      //   source: "country-centroids",
-      //   layout: {
-      //     "text-field": ["get", "country"],
-      //     "text-font": ["Montserrat SemiBold", "Arial Unicode MS Regular"],
-      //     "text-size": 10,
-      //     // "text-transform": "uppercase",
-      //     "text-offset": [0, 0.6],
-      //     "text-anchor": "top",
-      //   },
-      //   paint: {
-      //     "text-color": "black", // Text color
-      //     "text-halo-color": "#f0eee3", // Stroke color (halo)
-      //     "text-halo-width": 1.3, // Stroke width (halo)
-      //     "text-halo-blur": 0,
-      //   },
-      // });
+      map.addLayer({
+        id: "country-labels",
+        type: "symbol",
+        source: "country-centroids",
+        layout: {
+          "text-field": ["get", "name"],
+          "text-font": ["Montserrat SemiBold", "Arial Unicode MS Regular"],
+          "text-size": 10,
+          // "text-transform": "uppercase",
+          "text-offset": [0, 0.6],
+          "text-anchor": "top",
+        },
+        paint: {
+          "text-color": "black", // Text color
+          "text-halo-color": "white", // Stroke color (halo)
+          "text-halo-width": 1, // Stroke width (halo)
+          "text-halo-blur": 0,
+        },
+      });
 
       dispatch("mapLoaded");
     });
