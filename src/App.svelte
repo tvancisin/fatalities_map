@@ -14,7 +14,6 @@
   let mapLoaded = false;
   let selectedProperties;
 
-
   //recalculating heights
   onMount(() => {
     // Set initial vh value based on window.innerHeight
@@ -90,11 +89,11 @@
   let labels_geojson;
   let central_path = "/data/central_points.json";
   getGeo(central_path).then((geo) => {
-    labels_geojson = geo
-  })
+    labels_geojson = geo;
+  });
 
   //load geojson with all world polygons
-  let all_polygons
+  let all_polygons;
   let mygeojson;
   let myallgeojson;
   let country_array = [];
@@ -155,7 +154,6 @@
   }
 
   function handleClose() {
-    d3.select("h1").style("top", "-2px");
     d3.select(".visualization").style("right", "-100%");
     d3.select(".information").style("right", "-100%");
     // mapRef.flyToInitialPosition();
@@ -220,7 +218,32 @@
   <Info on:close={handleClose} />
 
   <div id="legend">
-    <svg height="35px" width="200px">
+    <svg height="100px" width="200px">
+      <image href="./sign.png" x=62 y=2 height="20" />
+      <text
+        x="82"
+        y="15"
+        fill="black"
+        font-size="12"
+        font-weight="500"
+        text-anchor="start">Agreement in 2023</text
+      >
+
+      <rect x=40 y=25 width=20 rx=2 height=15 fill="#A1A1A2"/>
+      <text
+        x="64"
+        y="37"
+        fill="black"
+        font-size="12"
+        font-weight="500"
+        text-anchor="start">Agreement since 1990</text
+      >
+
+      <rect x=5 y=61 width=50 height=5 fill="#CD9E9D"/>
+      <rect x=55 y=56 width=50 height=10 fill="#A26F6F"/>
+      <rect x=105 y=51 width=50 height=15 fill="#932A2A"/>
+      <rect x=155 y=46 width=50 height=20 fill="#311110"/>
+
       <defs>
         <linearGradient id="legend_gradient">
           <stop class="stop_one" offset="0%" />
@@ -228,10 +251,10 @@
           <stop class="stop_three" offset="100%" />
         </linearGradient>
       </defs>
-      <rect id="legend_rectangle" x="5" rx="2" y="5" width="200" height="15" />
+      <rect id="legend_rectangle" x="5" rx="2" y="68" width="200" height="15" />
       <text
         x="5"
-        y="35"
+        y="95"
         fill="black"
         font-size="12"
         font-weight="500"
@@ -239,7 +262,7 @@
       >
       <text
         x="200"
-        y="35"
+        y="95"
         fill="black"
         font-size="12"
         font-weight="500"
@@ -284,7 +307,7 @@
     background-color: #ffffff;
     color: black;
     border: 1px solid gray;
-    border-radius: 2px;
+    border-radius: 4px;
     padding: 10px 15px;
     font-size: 16px;
     cursor: pointer;
@@ -303,7 +326,8 @@
     border-radius: 2px;
     position: absolute;
     font-weight: 400;
-    width: 100%;
+    /* width: 100%; */
+    padding: 5px;
     top: -2px;
     font-size: 2em;
     margin: 0px;
@@ -312,6 +336,7 @@
     background: white;
     z-index: 1;
     transition: top 0.3s ease;
+    box-shadow: 0 0 3px #5a5a5a;
   }
 
   @media only screen and (max-width: 1450px) {
@@ -333,9 +358,12 @@
   }
 
   #legend {
+    width: 205px;
     position: absolute;
     bottom: 5px;
-    right: 10px;
+    right: 5px;
+    background-color: #ffffffc9;
+    border-radius: 3px;
   }
 
   #legend_rectangle {
@@ -367,6 +395,7 @@
     font-size: 1em;
     cursor: pointer;
     z-index: 10;
+    width: 50px;
   }
 
   #info_button:hover {
@@ -385,6 +414,7 @@
       left: 1px;
       padding: 3px 12px;
       font-size: 0.6em;
+      width: 30px;
     }
   }
 </style>

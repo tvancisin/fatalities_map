@@ -3,6 +3,7 @@
   import mapboxgl from "mapbox-gl";
   import * as turf from "turf";
   import Dropdown from "./Dropdown.svelte";
+  import * as d3 from "d3";
 
   const dispatch = createEventDispatcher();
 
@@ -14,24 +15,41 @@
   export let icon_data;
 
   let height;
+  let icons = [];
+  let icon_height;
+  let icon_width;
   let map;
   let current_zoom = 2.5;
 
   function adjustMapForWindowSize() {
     let centerCoordinates = map.getCenter();
     if (window.innerWidth <= 768) {
+      for (const icon of icons) {
+        icon.style.width = "15px";
+        icon.style.height = "20px";
+      }
       current_zoom = 1.4;
       map.flyTo({
         center: [centerCoordinates.lng, centerCoordinates.lat],
         zoom: 1.4,
       });
-    } else if (window.innerWidth <= 1000) {
+    } else if (window.innerWidth <= 1000 || window.innerHeight <= 768) {
+      for (const icon of icons) {
+        icon.style.width = "24px";
+        icon.style.height = "29px";
+      }
       current_zoom = 2.2;
       map.flyTo({
         center: [centerCoordinates.lng, centerCoordinates.lat],
-        zoom: 2.2,
+        zoom: 2,
       });
     } else {
+      for (const icon of icons) {
+        icon.style.width = "24px";
+        icon.style.height = "29px";
+      }
+      icon_height = 29;
+      icon_width = 24;
       current_zoom = 2.5;
       map.flyTo({
         center: [centerCoordinates.lng, centerCoordinates.lat],
@@ -40,7 +58,7 @@
     }
   }
 
-  let imageURL = new URL("/agreement.png", import.meta.url).href;
+  let imageURL = new URL("/sign.png", import.meta.url).href;
   let hoveredPolygonIdNoFatal = null;
   let hoveredPolygonIdFatal = null;
 
@@ -220,11 +238,10 @@
 
       for (const marker of icon_data.features) {
         const el = document.createElement("div");
-        const width = 25;
-        const height = 25;
+        el.classList.add("icon");
         el.style.backgroundImage = `url(${imageURL})`;
-        el.style.width = `${width}px`;
-        el.style.height = `${height}px`;
+        el.style.width = `24px`;
+        el.style.height = `29px`;
         el.style.backgroundSize = "100%";
         el.style.cursor = "pointer";
 
@@ -249,6 +266,8 @@
             popup.remove();
           }
         });
+
+        icons.push(el);
 
         new mapboxgl.Marker(el)
           .setLngLat(marker.geometry.coordinates)
@@ -321,6 +340,8 @@
 
   function flyToInitialPosition() {
     map.flyTo({ center: [50.224518, 22.213995], zoom: current_zoom });
+    d3.select("h1").style("top", "-2px");
+    d3.select(".visualization").style("right", "-100%");
   }
 
   function dropdownSelection(country) {
@@ -334,6 +355,9 @@
 <div class="map-container" bind:clientHeight={height}>
   <div id="map" bind:this={map}></div>
   <Dropdown {country_dropdown} on:close={dropdownSelection} />
+  <button id="refresh_button" on:click={flyToInitialPosition}>
+    <i class="fa fa-refresh"></i>
+  </button>
 </div>
 
 <style>
@@ -356,5 +380,51 @@
     top: 0;
     bottom: 0;
     width: 100%;
+  }
+
+  #refresh_button {
+    position: absolute;
+    top: 35px;
+    left: 5px;
+    background-color: white;
+    border: 1px solid rgb(173, 173, 173);
+    color: black;
+    padding: 5px 16px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 2px;
+    display: inline-block;
+    font-size: 1em;
+    cursor: pointer;
+    z-index: 10;
+    width: 50px;
+  }
+
+  @media only screen and (max-width: 500px) {
+    #refresh_button {
+      top: 24px;
+      left: 1px;
+      padding: 3px 12px;
+    }
+  }
+
+  #refresh_button:hover {
+    background-color: #aa4197;
+    color: white;
+  }
+
+  @media only screen and (max-width: 768px) {
+    #refresh_button {
+      font-size: 0.7em;
+    }
+  }
+
+  @media only screen and (max-width: 500px) {
+    #refresh_button {
+      left: 1px;
+      width: 30px;
+      padding: 3px 10px;
+      font-size: 0.6em;
+    }
   }
 </style>

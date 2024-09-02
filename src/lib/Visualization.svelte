@@ -388,12 +388,11 @@
     .visualization {
         color: black;
         position: fixed;
-        border-radius: 2px;
         right: -100%;
         width: 500px;
         height: calc(100%);
-        transition: right 0.3s ease;
-        background-color: rgba(80, 80, 80, 0.932);
+        transition: right 0.4s ease;
+        background-color: rgba(255, 255, 255, 0.932);
         overflow: hidden;
         z-index: 5;
         font-family: "Montserrat", sans-serif;
@@ -403,6 +402,7 @@
         display: flex;
         flex-direction: column;
         z-index: 11;
+        box-shadow: 0 0 3px #000000;
     }
 
     @media (max-width: 1450px) {
@@ -424,10 +424,10 @@
     }
 
     h3 {
-        color: rgb(255, 255, 255);
+        color: rgb(0, 0, 0);
         margin: auto;
-        font-size: 1.3em;
-        padding: 3px;
+        font-size: 1.3redem;
+        padding: 5px;
         font-weight: 450;
     }
 
@@ -453,29 +453,29 @@
         position: absolute;
         right: 4px;
         background: none;
-        color: white;
+        color: black;
         border: none;
         padding: 2px 10px;
         border-radius: 2px;
-        font-size: 22px;
+        font-size: 1.5em;
         cursor: pointer;
         font-family: "Montserrat";
         transition: border 0.3s ease;
     }
 
     .btn.close:hover {
-        border: 1px solid black;
+        color: red;
     }
 
     @media only screen and (max-width: 1450px) {
         .btn.close {
-            font-size: 1.1em;
+            font-size: 1.3em;
         }
     }
 
     @media only screen and (max-width: 1024px) {
         .btn.close {
-            font-size: 1em;
+            font-size: 1.2em;
         }
     }
 
@@ -487,7 +487,7 @@
         align-items: center;
         position: relative;
         overflow-y: auto;
-        font-size: 0.9em;
+        font-size: 0.8em;
         margin-top: 0px;
         margin-right: 5px;
         margin-left: 5px;
@@ -510,7 +510,13 @@
 
     @media only screen and (max-width: 768px) {
         #peace_content {
-            font-size: 0.8em;
+            font-size: 0.7em;
+        }
+    }
+
+    @media only screen and (max-height: 768px) {
+        #peace_content {
+            font-size: 0.7em;
         }
     }
 
@@ -533,6 +539,7 @@
         position: absolute;
         height: 100%;
         cursor: pointer;
+        border-radius: 3px;
     }
 
     #pax_link {
@@ -540,7 +547,7 @@
     }
 
     #tracker_link {
-        left: 35px;
+        left: 40px;
     }
 
     /* Hover state for the parent elements */
@@ -771,7 +778,7 @@
     #peace_title_div {
         text-align: center;
         position: relative;
-        margin: 1px;
+        margin: 2px;
     }
 
     :global(a) {
