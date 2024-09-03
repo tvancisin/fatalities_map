@@ -4,6 +4,7 @@
   import * as turf from "turf";
   import Dropdown from "./Dropdown.svelte";
   import * as d3 from "d3";
+  import { text } from "@fortawesome/fontawesome-svg-core";
 
   const dispatch = createEventDispatcher();
 
@@ -13,27 +14,42 @@
   export let myallgeojson;
   export let labels_geojson;
   export let icon_data;
+  let textSize = 10;
 
   let height;
   let icons = [];
-  let icon_height;
-  let icon_width;
   let map;
   let current_zoom = 2.5;
 
+  function getIconSize() {
+    if (window.innerWidth <= 768) {
+      return { width: 17, height: 21 }; // Smaller size for small screens
+    } else if (window.innerWidth <= 1000) {
+      return { width: 20, height: 25 }; // Medium size for medium screens
+    } else {
+      return { width: 24, height: 29 }; // Default size for larger screens
+    }
+  }
+
   function adjustMapForWindowSize() {
+    console.log("here");
+
     let centerCoordinates = map.getCenter();
     if (window.innerWidth <= 768) {
+      //adjust country label size
+      textSize = 7;
       for (const icon of icons) {
-        icon.style.width = "15px";
-        icon.style.height = "20px";
+        icon.style.width = "17px";
+        icon.style.height = "21px";
       }
       current_zoom = 1.4;
       map.flyTo({
         center: [centerCoordinates.lng, centerCoordinates.lat],
-        zoom: 1.4,
+        zoom: 1,
       });
     } else if (window.innerWidth <= 1000 || window.innerHeight <= 768) {
+      //adjust country label size
+      textSize = 11;
       for (const icon of icons) {
         icon.style.width = "24px";
         icon.style.height = "29px";
@@ -44,17 +60,20 @@
         zoom: 2,
       });
     } else {
+      textSize = 12;
       for (const icon of icons) {
         icon.style.width = "24px";
         icon.style.height = "29px";
       }
-      icon_height = 29;
-      icon_width = 24;
       current_zoom = 2.5;
       map.flyTo({
         center: [centerCoordinates.lng, centerCoordinates.lat],
         zoom: 2.5,
       });
+    }
+    // If the map has already loaded, update the layer text size
+    if (map && map.getLayer("country-labels")) {
+      map.setLayoutProperty("country-labels", "text-size", textSize);
     }
   }
 
@@ -69,7 +88,6 @@
       container: map,
       attributionControl: false,
       style: "mapbox://styles/sashagaribaldy/cm0az6qe200pf01phd16v6qm0",
-      // style: "mapbox://styles/mapbox/light-v11",
       center: [50.224518, 22.213995],
       zoom: 2.5,
       maxZoom: 5,
@@ -169,9 +187,6 @@
           "fill-extrusion-color": {
             property: "total_fatalities",
             stops: [
-              // [100, "#E58344"],
-              // [10000, "#973102"],
-              // [100000, "#4E0303"],
               [100, "#9F4544"],
               [10000, "#721B1B"],
               [100000, "#290a0a"],
@@ -236,12 +251,14 @@
       //ICONS FOR AGREEMENTS
       let popup; // Declare the popup variable outside the event listeners
 
+      const { width, height } = getIconSize();
+
       for (const marker of icon_data.features) {
         const el = document.createElement("div");
         el.classList.add("icon");
         el.style.backgroundImage = `url(${imageURL})`;
-        el.style.width = `24px`;
-        el.style.height = `29px`;
+        el.style.width = `${width}px`;
+        el.style.height = `${height}px`;
         el.style.backgroundSize = "100%";
         el.style.cursor = "pointer";
 
@@ -285,17 +302,16 @@
         source: "country-centroids",
         layout: {
           "text-field": ["get", "name"],
-          "text-font": ["Montserrat SemiBold", "Arial Unicode MS Regular"],
-          "text-size": 10,
-          // "text-transform": "uppercase",
-          "text-offset": [0, 0.6],
-          "text-anchor": "top",
+          "text-font": ["Montserrat Medium", "Arial Unicode MS Regular"],
+          "text-size": textSize,
+          "text-offset": [0, 0],
+          "text-anchor": "center",
         },
         paint: {
-          "text-color": "black", // Text color
-          "text-halo-color": "white", // Stroke color (halo)
-          "text-halo-width": 1, // Stroke width (halo)
-          "text-halo-blur": 0,
+          "text-color": "white", // Text color
+          // "text-halo-color": "white", // Stroke color (halo)
+          // "text-halo-width": 2, // Stroke width (halo)
+          // "text-halo-blur": 0,
         },
       });
 
@@ -385,7 +401,7 @@
   #refresh_button {
     position: absolute;
     top: 35px;
-    left: 5px;
+    right: 5px;
     background-color: white;
     border: 1px solid rgb(173, 173, 173);
     color: black;
@@ -402,8 +418,8 @@
 
   @media only screen and (max-width: 500px) {
     #refresh_button {
-      top: 24px;
-      left: 1px;
+      top: 23px;
+      right: 1px;
       padding: 3px 12px;
     }
   }
@@ -421,7 +437,7 @@
 
   @media only screen and (max-width: 500px) {
     #refresh_button {
-      left: 1px;
+      right: 1px;
       width: 30px;
       padding: 3px 10px;
       font-size: 0.6em;

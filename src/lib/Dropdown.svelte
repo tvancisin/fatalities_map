@@ -13,7 +13,7 @@
 
 <div class="dropdown">
     <button class="dropbtn">
-        <i class="fa fa-globe"></i>
+        <i class="fa fa-map-marker"></i>
     </button>
     <div class="dropdown-content">
         {#each country_dropdown as country}
@@ -27,7 +27,7 @@
     .dropdown {
         position: absolute;
         top: 67px;
-        left: 5px;
+        right: 5px;
         display: inline-block;
         z-index: 10;
         font-family: "Montserrat";
@@ -35,15 +35,12 @@
 
     @media only screen and (max-width: 500px) {
         .dropdown {
-            top: 45px;
-            left: 1px;
+            top: 43px;
+            right: 1px;
         }
     }
 
     .dropbtn {
-        position: absolute;
-        /* top: 35px;
-        right: 1px; */
         background-color: white;
         border: 1px solid rgb(173, 173, 173);
         color: black;
@@ -83,6 +80,7 @@
         top: 30px;
         background-color: #f9f9f9;
         min-width: 200px;
+        right: 0px;
         box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
         z-index: 1;
         max-height: 350px;

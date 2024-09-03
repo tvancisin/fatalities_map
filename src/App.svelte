@@ -10,12 +10,21 @@
   let width;
   let height;
   let mapRef;
-  let correct_height = window.initialHeight;
   let mapLoaded = false;
   let selectedProperties;
+  let path;
+
+  function logoResize () {
+    if (window.innerWidth <= 768) {
+      path = "./PeaceRep_Icon_nobg.jpg"
+    } else {
+      path = "./PeaceRep_nobg.png"
+    }
+  }
 
   //recalculating heights
   onMount(() => {
+    logoResize()
     // Set initial vh value based on window.innerHeight
     updateVH();
     // Add a resize event listener to recalculate on orientation change or resize
@@ -27,6 +36,7 @@
   function updateVH() {
     vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty("--vh", `${vh}px`);
+    logoResize()
   }
 
   //clicking on screen or button after map is loaded
@@ -197,6 +207,8 @@
 
   <h1>Conflict & Peace Process Map</h1>
 
+  <img id="logo" src={path}>
+
   <button id="info_button" on:click={openInformation}>
     <i class="fa fa-info"></i>
   </button>
@@ -275,6 +287,20 @@
 </main>
 
 <style>
+  #logo {
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    height: 38px;
+    z-index: 10;
+  }
+
+  @media only screen and (max-width: 768px) {
+    #logo {
+      height: 27px;
+    }
+  }
+
   main {
     width: 100vw;
     font-family: "Montserrat";
@@ -383,7 +409,7 @@
   #info_button {
     position: absolute;
     top: 3px;
-    left: 5px;
+    right: 5px;
     background-color: white;
     border: 1px solid rgb(173, 173, 173);
     color: black;
@@ -411,7 +437,8 @@
 
   @media only screen and (max-width: 500px) {
     #info_button {
-      left: 1px;
+      right: 1px;
+      top: 1px;
       padding: 3px 12px;
       font-size: 0.6em;
       width: 30px;
