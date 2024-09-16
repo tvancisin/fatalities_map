@@ -96,7 +96,6 @@
         //agreements
         agts = selected_country_details.total_agreements;
         console.log(selected_country_details);
-        
     }
 
     $: generateRectangles(agts);
@@ -118,7 +117,7 @@
         <button class="btn close" on:click={closeVisualization}
             ><i class="fa fa-close"></i></button
         >
-        <div id="tracker_link">
+        <!-- <div id="tracker_link">
             <a href={tracker_link} target="_blank"
                 ><img src="./pax.png" alt="pax logo" /></a
             >
@@ -129,7 +128,7 @@
                 ><img src="./search.png" alt="search icon" /></a
             >
             <span class="tooltip-text">Search PA-X Database</span>
-        </div>
+        </div> -->
         {#if selected_country_details}
             <h3>{selected_country_details.name}</h3>
         {/if}
@@ -201,6 +200,29 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div id="peace_process">
+            <h5>Peace Process</h5>
+            <div class="scrollable-content">
+                <p
+                    style="margin-bottom: 10px; text-align: center; font-weight: 400"
+                >
+                    {agts} Peace Agreements:
+                </p>
+                <svg height="25px" width={vis_width - 5}>
+                    {#each x_y_rectangles as rect (rect.x + "-" + rect.y)}
+                        <rect
+                            x={rect.x}
+                            y={rect.y}
+                            width={rectSize}
+                            height={rectSize}
+                            fill="black"
+                        />
+                    {/each}
+                </svg>
+                {@html selected_country_details?.peace_process_text}
             </div>
         </div>
 
@@ -330,53 +352,26 @@
                 {@html selected_country_details?.sm_general_updates}
             </div>
         </div>
-        <div id="peace_process">
-            <h5>Peace Process</h5>
-            <div class="scrollable-content">
-                <p
-                    style="margin-bottom: 10px; text-align: center; font-weight: 400"
-                >
-                    {agts} Peace Agreements:
-                </p>
-                <svg height="25px" width={vis_width - 5}>
-                    {#each x_y_rectangles as rect (rect.x + "-" + rect.y)}
-                        <rect
-                            x={rect.x}
-                            y={rect.y}
-                            width={rectSize}
-                            height={rectSize}
-                            fill="black"
-                        />
-                    {/each}
-                </svg>
-                {@html selected_country_details?.peace_process_text}
+
+        <div id="tracker">
+            <h5>PA-X Tracker & Database</h5>
+            <div class="content-wrapper">
+                <div class="content-box-buttons">
+                    <div id="tracker_link">
+                        <a href={tracker_link} target="_blank">
+                            <img src="./pax.png" alt="pax logo" />
+                        </a>
+                    </div>
+                </div>
+                <div class="content-box-buttons">
+                    <div id="pax_link">
+                        <a href={pax_link} target="_blank">
+                            <img src="./search.png" alt="search icon" />
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- <div id="tracker">
-            <h5>Additional Information</h5>
-            <div class="content-wrapper">
-                <div class="content-box">
-                    <h6 style="text-align: center">
-                        Tracker
-                    </h6>
-                    <div id="tracker_link">
-                        <a href={tracker_link} target="_blank"
-                            ><img src="./pax.png" alt="pax logo" /></a
-                        >
-                    </div>
-                </div>
-                <div class="content-box">
-                    <h6 style="text-align: center">
-                        Search PA-X
-                    </h6>
-                    <div id="pax_link">
-                        <a href={pax_link} target="_blank"
-                            ><img src="./search.png" alt="search icon" /></a
-                        >
-                    </div>
-                </div>
-            </div>
-        </div> -->
     </div>
 </div>
 
@@ -480,7 +475,7 @@
     }
 
     #peace_content {
-        height: 100%; /* Ensure that #peace_content takes full available height */
+        height: 100%;
         flex-grow: 1;
         display: flex;
         flex-direction: column;
@@ -491,7 +486,7 @@
         margin-top: 0px;
         margin-right: 5px;
         margin-left: 5px;
-        margin-bottom: 5px;
+        margin-bottom: 0px;
         border-radius: 2px;
         gap: 6px;
     }
@@ -520,12 +515,6 @@
         }
     }
 
-    #pax_link a,
-    #tracker_link a {
-        width: 80%;
-        height: 80%;
-    }
-
     #pax_link img,
     #tracker_link img {
         height: auto; /* Maintain the aspect ratio */
@@ -536,27 +525,31 @@
     /* Adjusting the flexbox container to be responsive */
     #pax_link,
     #tracker_link {
-        position: absolute;
+        text-align: center;
         height: 100%;
         cursor: pointer;
-        border-radius: 3px;
+        border-radius: 2px;
     }
 
-    #pax_link {
-        left: 5px;
+    .content-box-buttons {
+        flex-basis: 50%;
+        border-radius: 4px;
+        background: rgb(255, 255, 255);
+        color: black;
+        padding: 2px;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        overflow: visible;
+        box-shadow: 0 2px 3px rgba(107, 107, 107, 0.8);
     }
 
-    #tracker_link {
-        left: 40px;
-    }
-
-    /* Hover state for the parent elements */
-    #pax_link:hover,
-    #tracker_link:hover {
-        box-shadow: inset 0 0 5px rgb(139, 139, 139);
+    .content-box-buttons:hover {
+        background: #bd5453;
     }
 
     #general,
+    #tracker,
     #peace_process {
         flex-basis: 0;
         width: 100%;
@@ -566,6 +559,20 @@
         line-height: 1.5;
     }
 
+    #tracker_link a,
+    #pax_link a {
+        display: block; /* Make <a> element block level */
+        width: 100%; /* Take full width */
+        height: 100%; /* Take full height */
+    }
+
+    #tracker_link img,
+    #pax_link img {
+        max-height: 100%; /* Image will not exceed the parent container's height */
+        width: auto; /* Maintain aspect ratio */
+        object-fit: contain; /* Ensure the image fits well without distortion */
+    }
+
     #overview {
         flex-basis: 0;
         width: 100%;
@@ -575,6 +582,7 @@
     }
 
     #general,
+    #tracker,
     #peace_process,
     #overview {
         background: white;
@@ -583,6 +591,7 @@
 
     #overview h5,
     #general h5,
+    #tracker h5,
     #peace_process h5 {
         background-color: #d9d9d9;
         z-index: 2;
@@ -591,6 +600,7 @@
 
     #overview,
     #general,
+    #tracker,
     #peace_process {
         flex-shrink: 0; /* Prevent shrinking of these elements */
     }
@@ -599,12 +609,27 @@
         flex-grow: 1; /* Takes one unit of the available space */
     }
 
+    #tracker {
+        flex-grow: 0.7; /* Takes one unit of the available space */
+    }
+
     #general,
     #peace_process {
         flex-grow: 3; /* Takes three units of the available space each */
     }
 
     h5 {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        margin: 0;
+        padding: 5px 15px;
+        color: black;
+        font-size: 1em;
+        font-weight: 450;
+    }
+
+    #additional_info {
         position: sticky;
         top: 0;
         z-index: 1;
@@ -656,11 +681,9 @@
         background: white;
         color: black;
         padding: 2px;
-        /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8); */
         display: flex;
         flex-direction: column;
         box-sizing: border-box;
-        /* overflow: hidden; Prevent overflow from disrupting layout */
         overflow: visible;
     }
 
@@ -720,7 +743,6 @@
         transition: opacity 0.3s;
         font-size: 0.8em;
     }
-
 
     .tooltip-container:hover .tooltip-text {
         visibility: visible;
