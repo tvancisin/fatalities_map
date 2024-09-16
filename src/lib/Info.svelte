@@ -46,13 +46,12 @@
         font-family: "Montserrat", sans-serif;
         font-optical-sizing: auto;
         font-weight: 300;
+        font-size: 0.9em;
         font-style: normal;
         display: flex;
         flex-direction: column;
         z-index: 11;
     }
-
-    
 
     @media (max-width: 1450px) {
         .information {

@@ -409,7 +409,7 @@
     h3 {
         color: rgb(0, 0, 0);
         margin: auto;
-        font-size: 1.3redem;
+        font-size: 1.3em;
         padding: 5px;
         font-weight: 450;
     }
@@ -598,7 +598,7 @@
     }
 
     #tracker {
-        flex-grow: 0.7; /* Takes one unit of the available space */
+        flex-grow: 0.8; /* Takes one unit of the available space */
     }
 
     #general,
@@ -607,17 +607,6 @@
     }
 
     h5 {
-        position: sticky;
-        top: 0;
-        z-index: 1;
-        margin: 0;
-        padding: 5px 15px;
-        color: black;
-        font-size: 1em;
-        font-weight: 450;
-    }
-
-    #additional_info {
         position: sticky;
         top: 0;
         z-index: 1;
@@ -711,36 +700,6 @@
         opacity: 0;
         transition: opacity 0.3s;
         font-size: 0.8em;
-    }
-
-    #tracker_link .tooltip-text,
-    #pax_link .tooltip-text {
-        visibility: hidden;
-        width: 80px;
-        background-color: black;
-        color: #fff;
-        text-align: center;
-        border-radius: 6px;
-        padding: 5px;
-        position: absolute;
-        z-index: 10;
-        top: 125%;
-        left: 170%;
-        transform: translateX(-50%);
-        opacity: 0;
-        transition: opacity 0.3s;
-        font-size: 0.8em;
-    }
-
-    .tooltip-container:hover .tooltip-text {
-        visibility: visible;
-        opacity: 1;
-    }
-
-    #tracker_link:hover .tooltip-text,
-    #pax_link:hover .tooltip-text {
-        visibility: visible;
-        opacity: 1;
     }
 
     #acled_month,

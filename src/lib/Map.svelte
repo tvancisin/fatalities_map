@@ -4,7 +4,6 @@
   import * as turf from "turf";
   import Dropdown from "./Dropdown.svelte";
   import * as d3 from "d3";
-  import { text } from "@fortawesome/fontawesome-svg-core";
 
   const dispatch = createEventDispatcher();
 
@@ -32,7 +31,6 @@
   }
 
   function adjustMapForWindowSize() {
-
     let centerCoordinates = map.getCenter();
     if (window.innerWidth <= 768) {
       //adjust country label size
@@ -105,15 +103,8 @@
         type: "fill",
         source: "no_fatalities",
         paint: {
-          // "fill-color": "#dda3a2",
           "fill-color": "#898989",
           "fill-opacity": 0.8,
-          // "fill-opacity": [
-          //   "case",
-          //   ["boolean", ["feature-state", "hover"], false],
-          //   0.9,
-          //   0.9,
-          // ],
         },
       });
 
@@ -211,7 +202,15 @@
         },
       });
 
-      map.on("mousemove", `fatalities_fill`, (e) => {
+      let fatal_popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false,
+      });
+
+      function handleMouseMove(e) {
+        let tooltip_text = mygeojson.features.find(
+          (d) => d.properties.ADMIN == e.features[0].properties.ADMIN,
+        );
         map.getCanvas().style.cursor = "pointer";
         if (e.features.length > 0) {
           if (hoveredPolygonIdFatal !== null) {
@@ -225,8 +224,17 @@
             { source: "fatalities", id: hoveredPolygonIdFatal },
             { hover: true },
           );
+
+          fatal_popup
+            .setLngLat(e.lngLat)
+            .setHTML(
+              `<div style="color:black; font-family:Montserrat; line-height:1.2">${tooltip_text.properties.tooltip}</div>`,
+            )
+            .addTo(map);
         }
-      });
+      }
+
+      map.on("mousemove", "fatalities_fill", handleMouseMove);
 
       // When the mouse leaves the state-fill layer, update the feature state of the
       // previously hovered feature.
@@ -239,6 +247,7 @@
           );
         }
         hoveredPolygonIdFatal = null;
+        fatal_popup.remove();
       });
 
       map.on("click", "fatalities_fill", (e) => {
@@ -262,6 +271,9 @@
         el.style.cursor = "pointer";
 
         el.addEventListener("mouseover", () => {
+          //remove fatalities listener
+          map.off("mousemove", "fatalities_fill", handleMouseMove);
+
           // Create the popup and assign it to the popup variable
           popup = new mapboxgl.Popup({
             closeOnClick: false,
@@ -269,14 +281,16 @@
           })
             .setLngLat(marker.geometry.coordinates)
             .setHTML(
-              `<p style="color: black; font-size: 12px;">` +
+              `<div style="color:black; font-family:Montserrat; line-height:1.2"">` +
                 marker.properties.tooltip +
-                `</p>`,
+                `</div>`,
             )
             .addTo(map);
         });
 
         el.addEventListener("mouseout", () => {
+          //return fatalities listener
+          map.on("mousemove", "fatalities_fill", handleMouseMove);
           // Remove the popup when mouse leaves the element
           if (popup) {
             popup.remove();
@@ -442,4 +456,7 @@
       font-size: 0.6em;
     }
   }
+  /* :global(.mapboxgl-popup-tip) {
+    display: none;
+    } */
 </style>

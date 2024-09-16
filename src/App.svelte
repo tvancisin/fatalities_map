@@ -133,6 +133,8 @@
           feature.properties.total_fatalities = scaleHeight(
             +isoA3Map[feature.properties.ISO_A3].total_fatalities,
           );
+          feature.properties.tooltip =
+            isoA3Map[feature.properties.ISO_A3].polygon_tooltip;
           return feature;
         }),
     };
@@ -204,7 +206,7 @@
     <p id="loading_text">loading...</p>
   </div>
 
-  <h1>Conflict & Peace Process Map</h1>
+  <h1>PA-X Tracker Map</h1>
 
   <img id="logo" alt="PeaceRep Logo" src={path} />
 
