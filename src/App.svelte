@@ -13,39 +13,44 @@
   let mapLoaded = false;
   let selectedProperties;
   let path;
+  let legend_height = 100;
+  let legend_width = 200;
 
-  function logoResize () {
+  //recalculate screen size
+  function updateVH() {
+    vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+
+    //change logo and legend size on different screens
     if (window.innerWidth <= 768) {
-      path = "./PeaceRep_Icon_nobg.jpg"
+      path = "./PeaceRep_Icon_nobg.jpg";
+      legend_height = 60;
+      legend_width = 120;
     } else {
-      path = "./PeaceRep_nobg.png"
+      path = "./PeaceRep_nobg.png";
+      legend_height = 100;
+      legend_width = 200;
     }
   }
 
-  //recalculating heights
+  //INIT FUNCTION
   onMount(() => {
-    logoResize()
     // Set initial vh value based on window.innerHeight
     updateVH();
     // Add a resize event listener to recalculate on orientation change or resize
     window.addEventListener("resize", updateVH);
     // Force a re-render after a short delay to catch any UI shifts
-    setTimeout(updateVH, 100);
+    setTimeout(updateVH, 150);
   });
 
-  function updateVH() {
-    vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty("--vh", `${vh}px`);
-    logoResize()
-  }
-
-  //clicking on screen or button after map is loaded
+  //map loaded, show start button
   function handleMapLoaded() {
     mapLoaded = true;
     document.getElementById("loading_text").style.visibility = "hidden";
     document.getElementById("loading_button").style.visibility = "visible";
   }
 
+  //clicking on screen or button after map is loaded
   function handleScreenClick(event) {
     // Recalculate width and height
     width = window.innerWidth;
@@ -57,7 +62,7 @@
     }
   }
 
-  //load csv files
+  // LOAD CSV FILES
   let polygon_data;
   let country_data;
   let icon_data;
@@ -95,18 +100,17 @@
     };
   });
 
-  //load_central_points
+  // LOAD CENTRAL POINTS
   let labels_geojson;
   let central_path = "/data/central_points.json";
   getGeo(central_path).then((geo) => {
     labels_geojson = geo;
   });
 
-  //load geojson with all world polygons
+  // LOAD GEOJSON
   let all_polygons;
   let mygeojson;
   let myallgeojson;
-  let country_array = [];
   let country_dropdown;
   const json_path = "/data/country_polygons.json";
   let scaleHeight = d3.scaleLinear().domain([1, 10000]).range([1, 100000]);
@@ -134,6 +138,7 @@
     };
     mygeojson = fatalities_geojson;
 
+    //country names array
     country_dropdown = country_data.map((country) => country.name);
 
     //all and fatalities arrays
@@ -150,23 +155,12 @@
       type: "FeatureCollection",
       features: filteredFeatures,
     };
-
-    //names of the countries for labels
-    country_array = Object.values(isoA3Map).map(
-      (country) => country.country_name,
-    );
   });
 
   function dropdownSelection(country) {
     selectedProperties = country.detail;
     d3.select("h1").style("top", "-50px");
     d3.select(".visualization").style("right", "0px");
-  }
-
-  function handleClose() {
-    d3.select(".visualization").style("right", "-100%");
-    d3.select(".information").style("right", "-100%");
-    // mapRef.flyToInitialPosition();
   }
 
   function handlePolygonClick(event) {
@@ -185,6 +179,11 @@
   function openInformation() {
     d3.select(".information").style("right", "0px");
     d3.select(".visualization").style("right", "-100%");
+  }
+
+  function handleClose() {
+    d3.select(".visualization").style("right", "-100%");
+    d3.select(".information").style("right", "-100%");
   }
 </script>
 
@@ -207,7 +206,7 @@
 
   <h1>Conflict & Peace Process Map</h1>
 
-  <img id="logo" src={path}>
+  <img id="logo" alt="PeaceRep Logo" src={path} />
 
   <button id="info_button" on:click={openInformation}>
     <i class="fa fa-info"></i>
@@ -230,31 +229,49 @@
   <Info on:close={handleClose} />
 
   <div id="legend">
-    <svg height="100px" width="200px">
-      <image href="./sign.png" x=62 y=2 height="20" />
+    <svg
+      height={legend_height}
+      width={legend_width}
+      viewBox="0 0 200 100"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <image href="./sign.png" x="31%" y="2%" width="10%" height="20%" />
       <text
-        x="82"
-        y="15"
+        x="41%"
+        y="15%"
         fill="black"
         font-size="12"
-        font-weight="500"
-        text-anchor="start">Agreement in 2023</text
+        font-weight="400"
+        text-anchor="start"
       >
+        Agreement in 2023
+      </text>
 
-      <rect x=40 y=25 width=20 rx=2 height=15 fill="#A1A1A2"/>
+      <rect x="20%" y="25%" width="10%" rx="2" height="15%" fill="#A1A1A2" />
       <text
-        x="64"
-        y="37"
+        x="32%"
+        y="37%"
         fill="black"
         font-size="12"
-        font-weight="500"
-        text-anchor="start">Agreement since 1990</text
+        font-weight="400"
+        text-anchor="start"
       >
+        Agreement since 1990
+      </text>
 
-      <rect x=5 y=61 width=50 height=5 fill="#CD9E9D"/>
-      <rect x=55 y=56 width=50 height=10 fill="#A26F6F"/>
-      <rect x=105 y=51 width=50 height=15 fill="#932A2A"/>
-      <rect x=155 y=46 width=50 height=20 fill="#311110"/>
+      <rect x="2.5%" y="61%" width="25%" height="5%" fill="#CD9E9D" />
+      <rect x="27.5%" y="56%" width="25%" height="10%" fill="#A26F6F" />
+      <rect x="52.5%" y="51%" width="25%" height="15%" fill="#932A2A" />
+      <rect x="77.5%" y="46%" width="25%" height="20%" fill="#311110" />
+
+      <rect
+        id="legend_rectangle"
+        x="2.5%"
+        y="68%"
+        width="100%"
+        height="15%"
+        fill="url(#legend_gradient)"
+      />
 
       <defs>
         <linearGradient id="legend_gradient">
@@ -263,23 +280,28 @@
           <stop class="stop_three" offset="100%" />
         </linearGradient>
       </defs>
-      <rect id="legend_rectangle" x="5" rx="2" y="68" width="200" height="15" />
+
       <text
-        x="5"
-        y="95"
+        x="2.5%"
+        y="95%"
         fill="black"
         font-size="12"
-        font-weight="500"
-        text-anchor="start">less fatalities</text
+        font-weight="400"
+        text-anchor="start"
       >
+        less fatalities
+      </text>
+
       <text
-        x="200"
-        y="95"
+        x="97.5%"
+        y="95%"
         fill="black"
         font-size="12"
-        font-weight="500"
-        text-anchor="end">more fatalities</text
+        font-weight="400"
+        text-anchor="end"
       >
+        more fatalities
+      </text>
     </svg>
   </div>
 
@@ -292,7 +314,7 @@
     left: 2px;
     top: 2px;
     height: 38px;
-    z-index: 10;
+    z-index: 20;
   }
 
   @media only screen and (max-width: 768px) {
@@ -311,13 +333,13 @@
   }
 
   #loading_screen {
+    width: 100vw;
     position: absolute;
     background-color: #ffffff;
     z-index: 13;
     width: 100vw;
     display: flex;
     justify-content: center;
-    /* align-items: center; */
   }
 
   #loading_text {
@@ -352,7 +374,6 @@
     border-radius: 2px;
     position: absolute;
     font-weight: 400;
-    /* width: 100%; */
     padding: 5px;
     top: -2px;
     font-size: 2em;
@@ -390,6 +411,12 @@
     right: 5px;
     background-color: #ffffffc9;
     border-radius: 3px;
+  }
+
+  @media only screen and (max-width: 768px) {
+    #legend {
+      width: 120px;
+    }
   }
 
   #legend_rectangle {

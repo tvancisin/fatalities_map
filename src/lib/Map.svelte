@@ -32,7 +32,6 @@
   }
 
   function adjustMapForWindowSize() {
-    console.log("here");
 
     let centerCoordinates = map.getCenter();
     if (window.innerWidth <= 768) {
@@ -302,7 +301,7 @@
         source: "country-centroids",
         layout: {
           "text-field": ["get", "name"],
-          "text-font": ["Montserrat Medium", "Arial Unicode MS Regular"],
+          "text-font": ["Montserrat Light", "Arial Unicode MS Regular"],
           "text-size": textSize,
           "text-offset": [0, 0],
           "text-anchor": "center",

@@ -117,18 +117,6 @@
         <button class="btn close" on:click={closeVisualization}
             ><i class="fa fa-close"></i></button
         >
-        <!-- <div id="tracker_link">
-            <a href={tracker_link} target="_blank"
-                ><img src="./pax.png" alt="pax logo" /></a
-            >
-            <span class="tooltip-text">Search PA-X Tracker</span>
-        </div>
-        <div id="pax_link">
-            <a href={pax_link} target="_blank"
-                ><img src="./search.png" alt="search icon" /></a
-            >
-            <span class="tooltip-text">Search PA-X Database</span>
-        </div> -->
         {#if selected_country_details}
             <h3>{selected_country_details.name}</h3>
         {/if}
