@@ -415,7 +415,7 @@
 
   @media only screen and (max-width: 768px) {
     #legend {
-      width: 120px;
+      width: 123px;
     }
   }
 
