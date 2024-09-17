@@ -35,7 +35,7 @@
 
     @media only screen and (max-width: 500px) {
         .dropdown {
-            top: 43px;
+            top: 53px;
             right: 1px;
         }
     }
@@ -69,8 +69,8 @@
     @media only screen and (max-width: 500px) {
         .dropbtn {
             padding: 4px 10px;
-            font-size: 0.53em;
-            width: 30px;
+            font-size: 0.7em;
+            width: 40px;
         }
     }
     /* Dropdown content (hidden by default) */
@@ -111,7 +111,6 @@
         display: block;
     }
 
-    /* Change the background color of the dropdown button when the dropdown content is shown */
     .dropdown:hover .dropbtn {
         background-color: #aa4197;
         color: white;

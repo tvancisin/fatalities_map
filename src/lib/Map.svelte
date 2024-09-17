@@ -228,7 +228,8 @@
           fatal_popup
             .setLngLat(e.lngLat)
             .setHTML(
-              `<div style="color:black; font-family:Montserrat; line-height:1.2">${tooltip_text.properties.tooltip}</div>`,
+              `<div style="color:black;  font-family:Montserrat; 
+              line-height:1.2">${tooltip_text.properties.tooltip}</div>`,
             )
             .addTo(map);
         }
@@ -429,19 +430,6 @@
     width: 50px;
   }
 
-  @media only screen and (max-width: 500px) {
-    #refresh_button {
-      top: 23px;
-      right: 1px;
-      padding: 3px 12px;
-    }
-  }
-
-  #refresh_button:hover {
-    background-color: #aa4197;
-    color: white;
-  }
-
   @media only screen and (max-width: 768px) {
     #refresh_button {
       font-size: 0.7em;
@@ -451,12 +439,20 @@
   @media only screen and (max-width: 500px) {
     #refresh_button {
       right: 1px;
-      width: 30px;
-      padding: 3px 10px;
-      font-size: 0.6em;
+      top: 27px;
+      width: 40px;
+      padding: 5px 10px;
+      font-size: 0.7em;
     }
   }
-  /* :global(.mapboxgl-popup-tip) {
-    display: none;
-    } */
+
+  #refresh_button:hover {
+    background-color: #aa4197;
+    color: white;
+  }
+
+  :global(.mapboxgl-popup-content) {
+    background-color: rgba(255, 255, 255, 0.932);
+    width: 300px;
+  }
 </style>

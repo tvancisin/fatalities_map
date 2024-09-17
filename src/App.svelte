@@ -468,9 +468,9 @@
     #info_button {
       right: 1px;
       top: 1px;
-      padding: 3px 12px;
-      font-size: 0.6em;
-      width: 30px;
+      padding: 5px 12px;
+      font-size: 0.7em;
+      width: 40px;
     }
   }
 </style>
