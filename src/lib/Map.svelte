@@ -229,7 +229,8 @@
             .setLngLat(e.lngLat)
             .setHTML(
               `<div style="color:black;  font-family:Montserrat; 
-              line-height:1.2">${tooltip_text.properties.tooltip}</div>`,
+              line-height:1.2"><h3 style="margin-bottom:2px; margin-top:0px; 
+              text-align:center">Fatalities</h3>${tooltip_text.properties.tooltip}</div>`,
             )
             .addTo(map);
         }
@@ -282,7 +283,8 @@
           })
             .setLngLat(marker.geometry.coordinates)
             .setHTML(
-              `<div style="color:black; font-family:Montserrat; line-height:1.2"">` +
+              `<div style="color:black; font-family:Montserrat; line-height:1.2"">
+                <h3 style="margin-bottom:2px; margin-top:0px; text-align:center">Agreements</h3>` +
                 marker.properties.tooltip +
                 `</div>`,
             )
@@ -323,9 +325,6 @@
         },
         paint: {
           "text-color": "white", // Text color
-          // "text-halo-color": "white", // Stroke color (halo)
-          // "text-halo-width": 2, // Stroke width (halo)
-          // "text-halo-blur": 0,
         },
       });
 

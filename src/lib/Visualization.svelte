@@ -32,6 +32,8 @@
         ucdp_month_change,
         ucdp_year,
         ucdp_year_change,
+        acled_update,
+        ucdp_update,
         tracker_link,
         pax_link,
         gpi,
@@ -67,6 +69,10 @@
     }
 
     $: if (selected_country_details) {
+        console.log(selected_country_details);
+        acled_update = selected_country_details.acled_last_updated;
+        ucdp_update = selected_country_details.ucdp_last_updated;
+
         //populate acled data
         acled_month = +selected_country_details.acled_fatalities_last_month;
         acled_month_change =
@@ -137,7 +143,7 @@
                             {/if}
                             {acled_month_change}
                             <span class="tooltip-text"
-                                >Change from <br /> last month</span
+                                >Change from last month. Last Updated: {acled_update}</span
                             >
                         </div>
                     </div>
@@ -151,7 +157,7 @@
                             {/if}
                             {ucdp_month_change}
                             <span class="tooltip-text"
-                                >Change from <br /> last month</span
+                                >Change from last month. Last Updated: {ucdp_update}</span
                             >
                         </div>
                     </div>
@@ -168,7 +174,7 @@
                             {/if}
                             {acled_year_change}
                             <span class="tooltip-text"
-                                >Change from <br /> last year</span
+                                >Change from last year. Last Updated: {acled_update}</span
                             >
                         </div>
                     </div>
@@ -181,7 +187,7 @@
                                 <FontAwesomeIcon icon={faArrowDown} />
                             {/if}
                             <span class="tooltip-text"
-                                >Change from <br /> last year</span
+                                >Change from last year. Last Updated: {ucdp_update}</span
                             >
                             {ucdp_year_change}
                         </div>
@@ -399,6 +405,12 @@
         }
     }
 
+    @media (max-height: 800px) {
+        .visualization {
+            width: 400px;
+        }
+    }
+
     @media (max-width: 768px) {
         .visualization {
             width: 100%;
@@ -491,12 +503,6 @@
     }
 
     @media only screen and (max-width: 768px) {
-        #peace_content {
-            font-size: 0.7em;
-        }
-    }
-
-    @media only screen and (max-height: 768px) {
         #peace_content {
             font-size: 0.7em;
         }
@@ -685,20 +691,59 @@
 
     .tooltip-container .tooltip-text {
         visibility: hidden;
-        width: 80px;
+        width: 135px;
         background-color: black;
         color: #fff;
         text-align: center;
-        border-radius: 6px;
+        border-radius: 3px;
         padding: 5px;
         position: absolute;
         z-index: 10;
-        bottom: 100%;
-        left: 50%;
+        bottom: 0%;
+        right: 5%;
         transform: translateX(-50%);
         opacity: 0;
         transition: opacity 0.3s;
         font-size: 0.8em;
+    }
+
+    @media only screen and (max-width: 1450px) {
+        .tooltip-container .tooltip-text {
+            right: -2%;
+        }
+    }
+
+    @media only screen and (max-width: 1200px) {
+        .tooltip-container .tooltip-text {
+            right: -30%;
+        }
+    }
+
+    @media only screen and (max-width: 768px) {
+        .tooltip-container .tooltip-text {
+            right: 15%;
+        }
+    }
+
+    @media only screen and (max-width: 500px) {
+        .tooltip-container .tooltip-text {
+            right: 1%;
+        }
+    }
+
+    @media only screen and (max-width: 400px) {
+        .tooltip-container .tooltip-text {
+            right: -20%;
+        }
+    }
+
+    .tooltip-container .tooltip-text::after {
+        content: "";
+    }
+
+    .tooltip-container:hover .tooltip-text {
+        visibility: visible;
+        opacity: 1;
     }
 
     #acled_month,

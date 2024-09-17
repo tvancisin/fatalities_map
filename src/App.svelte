@@ -415,7 +415,7 @@
     position: absolute;
     bottom: 30px;
     right: 5px;
-    background-color: #ffffffc9;
+    background-color: rgba(255, 255, 255, 0.932);
     border-radius: 2px;
   }
 
@@ -446,7 +446,7 @@
     right: 5px;
     color: black;
     font-size: 11.5px;
-    background-color: #ffffffc9;
+    background-color: rgba(255, 255, 255, 0.932);
     padding: 5px;
 
   }
