@@ -63,6 +63,7 @@
   }
 
   // LOAD CSV FILES
+  let last_update_legend;
   let polygon_data;
   let country_data;
   let icon_data;
@@ -73,9 +74,11 @@
   ];
 
   getCSV(csv_path).then((data) => {
-    polygon_data = data[0];
-    country_data = data[1];
+    polygon_data = data[0]; // last update inside the legend 12 months
+    country_data = data[1]; // update for tooltip on hover
 
+    last_update_legend = polygon_data[0].last_update;
+    
     let icon_geojson = [];
     data[2].forEach(function (d) {
       let to_push = {
@@ -295,7 +298,7 @@
       </text>
 
       <text
-        x="97.5%"
+        x="99%"
         y="95%"
         fill="black"
         font-size="12"
@@ -306,6 +309,7 @@
       </text>
     </svg>
   </div>
+  <div id="update">Last Update: {last_update_legend} in 12 months</div>
 
   <Visualization {selected_country_details} on:close={handleClose} />
 </main>
@@ -409,10 +413,10 @@
   #legend {
     width: 205px;
     position: absolute;
-    bottom: 5px;
+    bottom: 30px;
     right: 5px;
     background-color: #ffffffc9;
-    border-radius: 3px;
+    border-radius: 2px;
   }
 
   @media only screen and (max-width: 768px) {
@@ -433,6 +437,26 @@
   }
   .stop_three {
     stop-color: #290a0a;
+  }
+
+  #update {
+    position: absolute;
+    border-radius: 2px;
+    bottom: 4px;
+    right: 5px;
+    color: black;
+    font-size: 11.5px;
+    background-color: #ffffffc9;
+    padding: 5px;
+
+  }
+
+  @media only screen and (max-width: 768px) {
+    #update{
+      right: 5px;
+      font-size: 7px;
+      bottom: 8px;
+    }
   }
 
   #info_button {

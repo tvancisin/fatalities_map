@@ -95,7 +95,6 @@
 
         //agreements
         agts = selected_country_details.total_agreements;
-        console.log(selected_country_details);
     }
 
     $: generateRectangles(agts);
