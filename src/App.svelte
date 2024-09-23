@@ -13,7 +13,8 @@
   let mapLoaded = false;
   let selectedProperties;
   let path;
-  let legend_height = 100;
+  let legend_height = 80;
+  let loc_legend_height = 80;
   let legend_width = 200;
 
   //recalculate screen size
@@ -24,11 +25,13 @@
     //change logo and legend size on different screens
     if (window.innerWidth <= 768) {
       path = "./PeaceRep_Icon_nobg.jpg";
-      legend_height = 60;
+      legend_height = 40;
+      loc_legend_height = 40;
       legend_width = 120;
     } else {
       path = "./PeaceRep_nobg.png";
-      legend_height = 100;
+      legend_height = 80;
+      loc_legend_height = 80;
       legend_width = 200;
     }
   }
@@ -235,18 +238,18 @@
   {/if}
 
   <Info on:close={handleClose} />
-
-  <div id="legend">
+  <div id="agt_legend">
+    <h4 style="text-align: left;">Agreement Legend</h4>
     <svg
-      height={legend_height}
+      height={loc_legend_height}
       width={legend_width}
-      viewBox="0 0 200 100"
+      viewBox="0 0 200 90"
       preserveAspectRatio="xMidYMid meet"
     >
-      <image href="./sign.png" x="31%" y="2%" width="10%" height="20%" />
+      <image href="./norm_agt.png" x="80%" y="2%" width="18%" height="28%" />
       <text
-        x="41%"
-        y="15%"
+        x="5%"
+        y="25%"
         fill="black"
         font-size="12"
         font-weight="400"
@@ -255,10 +258,22 @@
         Agreement in 2023
       </text>
 
-      <rect x="20%" y="25%" width="10%" rx="2" height="15%" fill="#A1A1A2" />
+      <image href="./loc_agt.png" x="80%" y="35%" width="18%" height="28%" />
       <text
-        x="32%"
-        y="37%"
+        x="5%"
+        y="55%"
+        fill="black"
+        font-size="12"
+        font-weight="400"
+        text-anchor="start"
+      >
+        Local agreement in 2023
+      </text>
+
+      <rect x="84%" y="68%" width="10%" rx="1" height="25%" fill="#A1A1A2" />
+      <text
+        x="5%"
+        y="85%"
         fill="black"
         font-size="12"
         font-weight="400"
@@ -266,16 +281,26 @@
       >
         Agreement since 1990
       </text>
+    </svg>
+  </div>
 
-      <rect x="2.5%" y="61%" width="25%" height="5%" fill="#CD9E9D" />
-      <rect x="27.5%" y="56%" width="25%" height="10%" fill="#A26F6F" />
-      <rect x="52.5%" y="51%" width="25%" height="15%" fill="#932A2A" />
-      <rect x="77.5%" y="46%" width="25%" height="20%" fill="#311110" />
+  <div id="legend">
+    <h4 style="text-align: right;">Fatalities Legend</h4>
+    <svg
+      height={legend_height}
+      width={legend_width}
+      viewBox="0 0 200 90"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <rect x="2.5%" y="60%" width="25%" height="5%" fill="#CD9E9D" />
+      <rect x="27.5%" y="40%" width="25%" height="25%" fill="#A26F6F" />
+      <rect x="52.5%" y="20%" width="25%" height="45%" fill="#932A2A" />
+      <rect x="77.5%" y="0%" width="25%" height="65%" fill="#311110" />
 
       <rect
         id="legend_rectangle"
         x="2.5%"
-        y="68%"
+        y="67%"
         width="100%"
         height="15%"
         fill="url(#legend_gradient)"
@@ -291,7 +316,7 @@
 
       <text
         x="2.5%"
-        y="95%"
+        y="96%"
         fill="black"
         font-size="12"
         font-weight="400"
@@ -302,7 +327,7 @@
 
       <text
         x="99%"
-        y="95%"
+        y="96%"
         fill="black"
         font-size="12"
         font-weight="400"
@@ -375,7 +400,7 @@
   }
 
   #loading_button:hover {
-    background-color: #AA4197;
+    background-color: #aa4197;
     color: white;
   }
 
@@ -413,10 +438,25 @@
     }
   }
 
+  #agt_legend {
+    width: 200px;
+    position: absolute;
+    bottom: 35px;
+    left: 0px;
+    background-color: rgba(255, 255, 255, 0.932);
+    border-radius: 2px;
+  }
+
+  @media only screen and (max-width: 768px) {
+    #agt_legend {
+      width: 123px;
+    }
+  }
+
   #legend {
     width: 205px;
     position: absolute;
-    bottom: 30px;
+    bottom: 35px;
     right: 5px;
     background-color: rgba(255, 255, 255, 0.932);
     border-radius: 2px;
@@ -499,4 +539,27 @@
       width: 40px;
     }
   }
+
+  h4 {
+    color: black;
+    margin: 10px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    font-weight: 500;
+    font-size: 0.9em;
+
+  }
+
+  @media only screen and (max-width: 768px) {
+    h4 {
+      font-size: 0.6em;
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    svg {
+      height: 50px;
+    }
+  }
+
 </style>

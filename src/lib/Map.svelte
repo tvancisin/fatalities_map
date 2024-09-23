@@ -24,9 +24,11 @@
     if (window.innerWidth <= 768) {
       return { width: 17, height: 21 }; // Smaller size for small screens
     } else if (window.innerWidth <= 1000) {
-      return { width: 20, height: 25 }; // Medium size for medium screens
+      // return { width: 20, height: 25 }; // Medium size for medium screens
+      return { width: 20, height: 25 }; // Smaller size for small screens
     } else {
-      return { width: 24, height: 29 }; // Default size for larger screens
+      // return { width: 24, height: 29 }; // Default size for larger screens
+      return { width: 24, height: 30 }; // Smaller size for small screens
     }
   }
 
@@ -45,11 +47,10 @@
         zoom: 1,
       });
     } else if (window.innerWidth <= 1000 || window.innerHeight <= 768) {
-      //adjust country label size
       textSize = 11;
       for (const icon of icons) {
-        icon.style.width = "24px";
-        icon.style.height = "29px";
+        icon.style.width = "17px";
+        icon.style.height = "21px";
       }
       current_zoom = 2.2;
       map.flyTo({
@@ -74,7 +75,8 @@
     }
   }
 
-  let imageURL = new URL("/sign.png", import.meta.url).href;
+  let imageURL = new URL("/norm_agt.png", import.meta.url).href;
+  let localimageURL = new URL("/loc_agt.png", import.meta.url).href;
   let hoveredPolygonIdNoFatal = null;
   let hoveredPolygonIdFatal = null;
 
@@ -265,8 +267,15 @@
 
       for (const marker of icon_data.features) {
         const el = document.createElement("div");
-        el.classList.add("icon");
-        el.style.backgroundImage = `url(${imageURL})`;
+        if (
+          marker.properties.country === "Niger" ||
+          marker.properties.country === "Nigeria" ||
+          marker.properties.country === "Pakistan"
+        ) {
+          el.style.backgroundImage = `url(${localimageURL})`;
+        } else {
+          el.style.backgroundImage = `url(${imageURL})`;
+        }
         el.style.width = `${width}px`;
         el.style.height = `${height}px`;
         el.style.backgroundSize = "100%";
