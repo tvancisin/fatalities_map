@@ -246,7 +246,7 @@
       viewBox="0 0 200 90"
       preserveAspectRatio="xMidYMid meet"
     >
-      <image href="./norm_agt.png" x="80%" y="2%" width="18%" height="28%" />
+      <image href="./norm_agt.png" x="80%" y="3%" width="18%" height="28%" />
       <text
         x="5%"
         y="25%"
@@ -258,7 +258,7 @@
         Agreement in 2023
       </text>
 
-      <image href="./loc_agt.png" x="80%" y="35%" width="18%" height="28%" />
+      <image href="./loc_agt.png" x="80%" y="36%" width="18%" height="28%" />
       <text
         x="5%"
         y="55%"
@@ -270,7 +270,7 @@
         Local agreement in 2023
       </text>
 
-      <rect x="84%" y="68%" width="10%" rx="1" height="25%" fill="#A1A1A2" />
+      <rect x="84%" y="69%" width="10%" rx="1" height="25%" fill="#A1A1A2" />
       <text
         x="5%"
         y="85%"

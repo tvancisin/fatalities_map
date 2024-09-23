@@ -24,10 +24,8 @@
     if (window.innerWidth <= 768) {
       return { width: 17, height: 21 }; // Smaller size for small screens
     } else if (window.innerWidth <= 1000) {
-      // return { width: 20, height: 25 }; // Medium size for medium screens
       return { width: 20, height: 25 }; // Smaller size for small screens
     } else {
-      // return { width: 24, height: 29 }; // Default size for larger screens
       return { width: 24, height: 30 }; // Smaller size for small screens
     }
   }
@@ -61,7 +59,7 @@
       textSize = 12;
       for (const icon of icons) {
         icon.style.width = "24px";
-        icon.style.height = "29px";
+        icon.style.height = "30px";
       }
       current_zoom = 2.5;
       map.flyTo({
