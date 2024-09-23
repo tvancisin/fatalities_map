@@ -111,6 +111,79 @@
     function closeVisualization() {
         dispatch("close");
     }
+
+    let tracker_width;
+    function show_database_tooltip(text, event) {
+        const tooltip = document.getElementById("tracker_link");
+        const rect = tooltip.getBoundingClientRect();
+        tracker_width = rect.width;
+
+        d3.select("#database_tooltip")
+            .text(text)
+            .style("bottom", "5px")
+            .style("visibility", "visible");
+
+        if (text == "PA-X Tracker") {
+            d3.select("#database_tooltip").style("left", "0px");
+        } else {
+            d3.select("#database_tooltip").style(
+                "left",
+                tracker_width + 10 + "px",
+            );
+        }
+    }
+    function hide_database_tooltip() {
+        d3.select("#database_tooltip").style("visibility", "hidden");
+    }
+
+    let rowHeight;
+    let rowWidth;
+    function show_fatalities_tooltip(text, event) {
+        const rowElement = event.currentTarget;
+        const rect = rowElement.getBoundingClientRect();
+        rowHeight = rect.height;
+        rowWidth = rect.width;
+
+        if (text == "acled_month") {
+            d3.select("#month_tooltip")
+                .style("visibility", "visible")
+                .style("top", rowHeight + "px")
+                .style("left", "5px")
+                .html(
+                    "Change from last month. <br> Last Updated: " +
+                        acled_update,
+                );
+        } else if (text == "ucdp_month") {
+            d3.select("#month_tooltip")
+                .style("left", "5px")
+                .style("top", rowHeight * 2 + "px")
+                .html(
+                    "Change from last month. <br> Last Updated: " + ucdp_update,
+                )
+                .style("visibility", "visible");
+        } else if (text == "acled_year") {
+            d3.select("#month_tooltip")
+                .style("top", rowHeight + "px")
+                .style("left", rowWidth + "px")
+                .html(
+                    "Change from last month. <br> Last Updated: " +
+                        acled_update,
+                )
+                .style("visibility", "visible");
+        } else {
+            d3.select("#month_tooltip")
+                .style("top", rowHeight * 2 + "px")
+                .style("left", rowWidth + "px")
+                .html(
+                    "Change from last month. <br> Last Updated: " + ucdp_update,
+                )
+                .style("visibility", "visible");
+        }
+    }
+
+    function hide_fatalities_tooltip () {
+        d3.select("#month_tooltip").style("visibility", "hidden");
+    }
 </script>
 
 <div
@@ -131,40 +204,53 @@
         <div id="overview" bind:clientHeight={overview_height}>
             <h5>Overview</h5>
             <div class="content-wrapper">
+                <div id="month_tooltip"></div>
                 <div class="content-box">
                     <h6>Fatalities Last Month</h6>
-                    <div class="row">
+                    <div
+                        class="row"
+                        on:mousemove={(event) =>
+                            show_fatalities_tooltip("acled_month", event)}
+                        on:mouseleave={hide_fatalities_tooltip}
+                        role="alert"
+                    >
                         <div id="acled_month">ACLED: {acled_month}</div>
-                        <div id="acled_m_change" class="tooltip-container">
+                        <div id="acled_m_change">
                             {#if acled_month_change > 0}
                                 <FontAwesomeIcon icon={faArrowUp} />
                             {:else if acled_month_change < 0}
                                 <FontAwesomeIcon icon={faArrowDown} />
                             {/if}
                             {acled_month_change}
-                            <span class="tooltip-text"
-                                >Change from last month. Last Updated: {acled_update}</span
-                            >
                         </div>
                     </div>
-                    <div class="row">
+                    <div
+                        class="row"
+                        on:mousemove={(event) =>
+                            show_fatalities_tooltip("ucdp_month", event)}
+                        on:mouseleave={hide_fatalities_tooltip}
+                        role="alert"
+                    >
                         <div id="ucdp_month">UCDP: {ucdp_month}</div>
-                        <div id="ucdp_m_change" class="tooltip-container">
+                        <div id="ucdp_m_change">
                             {#if ucdp_month_change > 0}
                                 <FontAwesomeIcon icon={faArrowUp} />
                             {:else if ucdp_month_change < 0}
                                 <FontAwesomeIcon icon={faArrowDown} />
                             {/if}
                             {ucdp_month_change}
-                            <span class="tooltip-text"
-                                >Change from last month. Last Updated: {ucdp_update}</span
-                            >
                         </div>
                     </div>
                 </div>
                 <div class="content-box">
                     <h6>Fatalities Last Year</h6>
-                    <div class="row">
+                    <div
+                        class="row"
+                        on:mousemove={(event) =>
+                            show_fatalities_tooltip("acled_year", event)}
+                        on:mouseleave={hide_fatalities_tooltip}
+                        role="alert"
+                    >
                         <div id="acled_year">ACLED: {acled_year}</div>
                         <div id="acled_y_change" class="tooltip-container">
                             {#if acled_year_change > 0}
@@ -173,12 +259,18 @@
                                 <FontAwesomeIcon icon={faArrowDown} />
                             {/if}
                             {acled_year_change}
-                            <span class="tooltip-text"
+                            <!-- <span class="tooltip-text"
                                 >Change from last year. Last Updated: {acled_update}</span
-                            >
+                            > -->
                         </div>
                     </div>
-                    <div class="row">
+                    <div
+                        class="row"
+                        on:mousemove={(event) =>
+                            show_fatalities_tooltip("ucdp_year", event)}
+                        on:mouseleave={hide_fatalities_tooltip}
+                        role="alert"
+                    >
                         <div id="ucdp_year">UCDP: {ucdp_year}</div>
                         <div id="ucdp_y_change" class="tooltip-container">
                             {#if ucdp_year_change > 0}
@@ -186,9 +278,9 @@
                             {:else if ucdp_year_change < 0}
                                 <FontAwesomeIcon icon={faArrowDown} />
                             {/if}
-                            <span class="tooltip-text"
+                            <!-- <span class="tooltip-text"
                                 >Change from last year. Last Updated: {ucdp_update}</span
-                            >
+                            > -->
                             {ucdp_year_change}
                         </div>
                     </div>
@@ -348,17 +440,30 @@
 
         <div id="tracker">
             <h5>PA-X Tracker & Database</h5>
+            <div id="database_tooltip">tooltip</div>
             <div class="content-wrapper">
                 <div class="content-box-buttons">
                     <div id="tracker_link">
-                        <a href={tracker_link} target="_blank">
+                        <a
+                            href={tracker_link}
+                            target="_blank"
+                            on:mousemove={(event) =>
+                                show_database_tooltip("PA-X Tracker", event)}
+                            on:mouseleave={hide_database_tooltip}
+                        >
                             <img src="./pax.png" alt="pax logo" />
                         </a>
                     </div>
                 </div>
                 <div class="content-box-buttons">
                     <div id="pax_link">
-                        <a href={pax_link} target="_blank">
+                        <a
+                            href={pax_link}
+                            target="_blank"
+                            on:mousemove={(event) =>
+                                show_database_tooltip("PA-X Database", event)}
+                            on:mouseleave={hide_database_tooltip}
+                        >
                             <img src="./search.png" alt="search icon" />
                         </a>
                     </div>
@@ -380,7 +485,7 @@
         width: 500px;
         height: calc(100%);
         transition: right 0.4s ease;
-        background-color: rgba(255, 255, 255, 0.932);
+        background-color: rgb(66 66 66 / 93%);
         overflow: hidden;
         z-index: 5;
         font-family: "Montserrat", sans-serif;
@@ -418,7 +523,7 @@
     }
 
     h3 {
-        color: rgb(0, 0, 0);
+        color: rgb(255, 255, 255);
         margin: auto;
         font-size: 1.3em;
         padding: 5px;
@@ -447,7 +552,7 @@
         position: absolute;
         right: 4px;
         background: none;
-        color: black;
+        color: #fdd900;
         border: none;
         padding: 2px 10px;
         border-radius: 2px;
@@ -458,7 +563,7 @@
     }
 
     .btn.close:hover {
-        color: red;
+        color: black;
     }
 
     @media only screen and (max-width: 1450px) {
@@ -483,11 +588,11 @@
         overflow-y: auto;
         font-size: 0.8em;
         margin-top: 0px;
-        margin-right: 5px;
-        margin-left: 5px;
-        margin-bottom: 0px;
+        margin-right: 4px;
+        margin-left: 4px;
+        margin-bottom: 4px;
         border-radius: 2px;
-        gap: 6px;
+        gap: 5px;
     }
 
     @media only screen and (max-width: 1450px) {
@@ -579,7 +684,7 @@
     #peace_process,
     #overview {
         background: white;
-        border-radius: 3px;
+        border-radius: 2px;
     }
 
     #overview h5,
@@ -832,5 +937,29 @@
     }
     .stop33 {
         stop-color: black;
+    }
+
+    #database_tooltip {
+        padding: 5px;
+        font-size: 10px;
+        border-radius: 3px;
+        visibility: hidden;
+        position: absolute;
+        background-color: black;
+        color: white;
+        z-index: 5;
+        pointer-events: none;
+    }
+
+    #month_tooltip {
+        padding: 5px;
+        font-size: 10px;
+        border-radius: 3px;
+        visibility: hidden;
+        position: absolute;
+        background-color: black;
+        color: white;
+        z-index: 5;
+        pointer-events: none;
     }
 </style>

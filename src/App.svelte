@@ -74,11 +74,12 @@
   ];
 
   getCSV(csv_path).then((data) => {
-    polygon_data = data[0]; // last update inside the legend 12 months
-    country_data = data[1]; // update for tooltip on hover
+    polygon_data = data[0]; // contains last update
+    country_data = data[1]; // contains tooltip for fatal on hover
 
     last_update_legend = polygon_data[0].last_update;
-    
+
+    //build geojson object for agreement icons
     let icon_geojson = [];
     data[2].forEach(function (d) {
       let to_push = {
@@ -204,14 +205,16 @@
     on:click={handleScreenClick}
   >
     <button id="loading_button" on:click={handleScreenClick}
-      >Visualization</button
+      >PA-X Tracker Map</button
     >
     <p id="loading_text">loading...</p>
   </div>
 
   <h1>PA-X Tracker Map</h1>
 
-  <img id="logo" alt="PeaceRep Logo" src={path} />
+  <a href="https://peacerep.org/" target="_blank" title="Visit PeaceRep Website"
+    ><img id="logo" alt="PeaceRep Logo" src={path} /></a
+  >
 
   <button id="info_button" on:click={openInformation}>
     <i class="fa fa-info"></i>
@@ -309,7 +312,7 @@
       </text>
     </svg>
   </div>
-  <div id="update">Last Update: {last_update_legend} in 12 months</div>
+  <div id="update">Last 12 months of fatalities from {last_update_legend}</div>
 
   <Visualization {selected_country_details} on:close={handleClose} />
 </main>
@@ -372,8 +375,8 @@
   }
 
   #loading_button:hover {
-    background-color: steelblue;
-    color: black;
+    background-color: #AA4197;
+    color: white;
   }
 
   h1 {
@@ -448,11 +451,10 @@
     font-size: 11.5px;
     background-color: rgba(255, 255, 255, 0.932);
     padding: 5px;
-
   }
 
   @media only screen and (max-width: 768px) {
-    #update{
+    #update {
       right: 5px;
       font-size: 7px;
       bottom: 8px;

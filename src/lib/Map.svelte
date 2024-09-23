@@ -13,8 +13,8 @@
   export let myallgeojson;
   export let labels_geojson;
   export let icon_data;
-  let textSize = 10;
 
+  let textSize = 10;
   let height;
   let icons = [];
   let map;
@@ -230,7 +230,7 @@
             .setHTML(
               `<div style="color:black;  font-family:Montserrat; 
               line-height:1.2"><h3 style="margin-bottom:2px; margin-top:0px; 
-              text-align:center">Fatalities</h3>${tooltip_text.properties.tooltip}</div>`,
+              text-align:center">Conflict</h3>${tooltip_text.properties.tooltip}</div>`,
             )
             .addTo(map);
         }
@@ -284,7 +284,7 @@
             .setLngLat(marker.geometry.coordinates)
             .setHTML(
               `<div style="color:black; font-family:Montserrat; line-height:1.2"">
-                <h3 style="margin-bottom:2px; margin-top:0px; text-align:center">Agreements</h3>` +
+                <h3 style="margin-bottom:2px; margin-top:0px; text-align:center">Agreement</h3>` +
                 marker.properties.tooltip +
                 `</div>`,
             )
