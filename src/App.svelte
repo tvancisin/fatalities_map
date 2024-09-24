@@ -239,7 +239,7 @@
 
   <Info on:close={handleClose} />
   <div id="agt_legend">
-    <h4 style="text-align: left;">Agreement Legend</h4>
+    <h4>Agreement</h4>
     <svg
       height={loc_legend_height}
       width={legend_width}
@@ -248,7 +248,7 @@
     >
       <image href="./norm_agt.png" x="80%" y="3%" width="18%" height="28%" />
       <text
-        x="5%"
+        x="0%"
         y="25%"
         fill="black"
         font-size="12"
@@ -260,7 +260,7 @@
 
       <image href="./loc_agt.png" x="80%" y="36%" width="18%" height="28%" />
       <text
-        x="5%"
+        x="0%"
         y="55%"
         fill="black"
         font-size="12"
@@ -272,7 +272,7 @@
 
       <rect x="84%" y="69%" width="10%" rx="1" height="25%" fill="#A1A1A2" />
       <text
-        x="5%"
+        x="0%"
         y="85%"
         fill="black"
         font-size="12"
@@ -285,7 +285,7 @@
   </div>
 
   <div id="legend">
-    <h4 style="text-align: right;">Fatalities Legend</h4>
+    <h4>Conflict</h4>
     <svg
       height={legend_height}
       width={legend_width}
@@ -442,7 +442,7 @@
     width: 200px;
     position: absolute;
     bottom: 35px;
-    left: 0px;
+    left: 5px;
     background-color: rgba(255, 255, 255, 0.932);
     border-radius: 2px;
   }
@@ -542,9 +542,8 @@
 
   h4 {
     color: black;
-    margin: 10px;
-    margin-top: 3px;
-    margin-bottom: 3px;
+    text-align: center;
+    margin: 2px;
     font-weight: 500;
     font-size: 0.9em;
 
