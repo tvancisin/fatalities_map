@@ -148,7 +148,10 @@
     mygeojson = fatalities_geojson;
 
     //country names array
-    country_dropdown = country_data.map((country) => country.name);
+    country_dropdown = country_data.map((country) => ({
+      name: country.name,
+      iso_code: country.iso_code,
+    }));
 
     //all and fatalities arrays
     const iso3all = country_data.map((country) => country.iso_code);
@@ -164,19 +167,10 @@
       type: "FeatureCollection",
       features: filteredFeatures,
     };
-
-    console.log(mygeojson, myallgeojson);
-    
   });
 
-  function dropdownSelection(country) {
-    selectedProperties = country.detail;
-    d3.select("h1").style("top", "-50px");
-    d3.select(".visualization").style("right", "0px");
-  }
-
   function handlePolygonClick(event) {
-    selectedProperties = event.detail;
+    selectedProperties = event.detail[1];
     d3.select("h1").style("top", "-50px");
     d3.select(".visualization").style("right", "0px");
   }
@@ -184,7 +178,7 @@
   let selected_country_details;
   $: if (selectedProperties) {
     selected_country_details = country_data.find(function (d) {
-      return d.name == selectedProperties;
+      return d.iso_code == selectedProperties;
     });
   }
 
@@ -549,7 +543,6 @@
     margin: 2px;
     font-weight: 500;
     font-size: 0.9em;
-
   }
 
   @media only screen and (max-width: 768px) {
@@ -563,5 +556,4 @@
       height: 50px;
     }
   }
-
 </style>

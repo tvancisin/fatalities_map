@@ -6,10 +6,7 @@
     let selectedCountry = "";
 
     function handleSelection(country) {
-        console.log(selectedCountry);
-        
-        selectedCountry = country;
-        dispatch("close", selectedCountry);
+        dispatch("close", country);
     }
 </script>
 
@@ -19,7 +16,7 @@
     </button>
     <div class="dropdown-content">
         {#each country_dropdown as country}
-            <a href="#" on:click={() => handleSelection(country)}>{country}</a>
+            <a href="#" on:click={() => handleSelection([country.name,country.iso_code])}>{country.name}</a>
         {/each}
     </div>
 </div>

@@ -69,7 +69,6 @@
     }
 
     $: if (selected_country_details) {
-        console.log(selected_country_details);
         acled_update = selected_country_details.acled_last_updated;
         ucdp_update = selected_country_details.ucdp_last_updated;
 

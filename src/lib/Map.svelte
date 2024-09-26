@@ -157,8 +157,9 @@
 
       map.on("click", "no_fatalities_fill", (e) => {
         let clicked_country = e.features[0].properties.ADMIN;
-        zoomToCountry(clicked_country);
-        dispatch("polygonClick", clicked_country);
+        let clicked_country_iso = e.features[0].properties.ISO_A3;
+        zoomToCountry(clicked_country_iso);
+        dispatch("polygonClick", [clicked_country, clicked_country_iso]);
       });
 
       //COUNTRIES WITH FATALITIES
@@ -255,8 +256,8 @@
       map.on("click", "fatalities_fill", (e) => {
         let clicked_country = e.features[0].properties.ADMIN;
         let clicked_country_iso = e.features[0].properties.ISO_A3;
-        zoomToCountry(clicked_country);
-        dispatch("polygonClick", clicked_country);
+        zoomToCountry(clicked_country_iso);
+        dispatch("polygonClick", [clicked_country, clicked_country_iso]);
       });
 
       //ICONS FOR AGREEMENTS
@@ -345,17 +346,17 @@
 
   function zoomToCountry(country) {
     let bound_box;
-    if (country == "Russia") {
+    if (country == "RUS") {
       bound_box = [
         68.1434025400001, 86.74555084800015, 97.36225305200006,
         35.49540557900009,
       ];
-    } else if (country == "United States of America") {
+    } else if (country == "USA") {
       bound_box = [
         -160.3688042289999, 24.546282924364334, -36.7005916009999,
         32.71283640500015,
       ];
-    } else if (country == "France") {
+    } else if (country == "FRA") {
       bound_box = [
         -8.691314256999902, 40.909613348000065, 12.771169467000021, 50.84788646,
       ];
@@ -363,7 +364,7 @@
       let countries = all_polygons.features;
 
       let the_country = countries.find(function (d) {
-        return d.properties.ADMIN == country;
+        return d.properties.ISO_A3 == country;
       });
       bound_box = turf.bbox(the_country);
     }
@@ -382,7 +383,7 @@
   }
 
   function dropdownSelection(country) {
-    zoomToCountry(country.detail);
+    zoomToCountry(country.detail[1]);
     dispatch("polygonClick", country.detail);
   }
 
