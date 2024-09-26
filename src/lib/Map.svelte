@@ -58,8 +58,8 @@
     } else {
       textSize = 12;
       for (const icon of icons) {
-        icon.style.width = "24px";
-        icon.style.height = "30px";
+        icon.style.width = "26px";
+        icon.style.height = "32px";
       }
       current_zoom = 2.5;
       map.flyTo({
