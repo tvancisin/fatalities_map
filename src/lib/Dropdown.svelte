@@ -6,6 +6,8 @@
     let selectedCountry = "";
 
     function handleSelection(country) {
+        console.log(selectedCountry);
+        
         selectedCountry = country;
         dispatch("close", selectedCountry);
     }

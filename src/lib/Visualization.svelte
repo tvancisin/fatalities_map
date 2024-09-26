@@ -166,7 +166,7 @@
                 .style("top", rowHeight + "px")
                 .style("left", rowWidth + "px")
                 .html(
-                    "Change from last month. <br> Last Updated: " +
+                    "Change from last year. <br> Last Updated: " +
                         acled_update,
                 )
                 .style("visibility", "visible");
@@ -175,7 +175,7 @@
                 .style("top", rowHeight * 2 + "px")
                 .style("left", rowWidth + "px")
                 .html(
-                    "Change from last month. <br> Last Updated: " + ucdp_update,
+                    "Change from last year. <br> Last Updated: " + ucdp_update,
                 )
                 .style("visibility", "visible");
         }
@@ -259,9 +259,6 @@
                                 <FontAwesomeIcon icon={faArrowDown} />
                             {/if}
                             {acled_year_change}
-                            <!-- <span class="tooltip-text"
-                                >Change from last year. Last Updated: {acled_update}</span
-                            > -->
                         </div>
                     </div>
                     <div
@@ -278,9 +275,6 @@
                             {:else if ucdp_year_change < 0}
                                 <FontAwesomeIcon icon={faArrowDown} />
                             {/if}
-                            <!-- <span class="tooltip-text"
-                                >Change from last year. Last Updated: {ucdp_update}</span
-                            > -->
                             {ucdp_year_change}
                         </div>
                     </div>
@@ -307,6 +301,7 @@
                         />
                     {/each}
                 </svg>
+                <br>
                 {@html selected_country_details?.peace_process_text}
             </div>
         </div>

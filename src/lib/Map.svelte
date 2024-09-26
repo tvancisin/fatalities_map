@@ -254,6 +254,7 @@
 
       map.on("click", "fatalities_fill", (e) => {
         let clicked_country = e.features[0].properties.ADMIN;
+        let clicked_country_iso = e.features[0].properties.ISO_A3;
         zoomToCountry(clicked_country);
         dispatch("polygonClick", clicked_country);
       });
