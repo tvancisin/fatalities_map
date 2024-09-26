@@ -164,6 +164,9 @@
       type: "FeatureCollection",
       features: filteredFeatures,
     };
+
+    console.log(mygeojson, myallgeojson);
+    
   });
 
   function dropdownSelection(country) {
@@ -180,6 +183,10 @@
 
   let selected_country_details;
   $: if (selectedProperties) {
+    console.log(selectedProperties);
+    console.log(country_data);
+    
+    
     selected_country_details = country_data.find(function (d) {
       return d.name == selectedProperties;
     });
