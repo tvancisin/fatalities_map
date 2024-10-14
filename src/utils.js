@@ -13,8 +13,14 @@ export async function getCSV(paths) {
     // return loadedData
 }
 
+// export async function getGeo(url) {
+//     let response = await fetch((import.meta.env.BASE_URL || "") + url);
+//     let json = await response.json();
+//     return json;
+// }
+
 export async function getGeo(url) {
-    let response = await fetch((import.meta.env.BASE_URL || "") + url);
-    let json = await response.json();
-    return json;
+    let response = await d3.json(url);
+    // let json = await response.json();
+    return response;
 }

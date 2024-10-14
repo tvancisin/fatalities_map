@@ -191,6 +191,10 @@
     d3.select(".visualization").style("right", "-100%");
     d3.select(".information").style("right", "-100%");
   }
+
+  function openTracker() {
+    window.open("https://pax.peaceagreements.org/tracker/", "_blank");
+  }
 </script>
 
 <main
@@ -204,7 +208,7 @@
     style="height: calc(var(--vh, 1vh) * 100);"
     on:click={handleScreenClick}
   >
-    <button id="loading_button" on:click={handleScreenClick}
+    <button id="loading_button" on:click={handleScreenClick} 
       >PA-X Tracker Map</button
     >
     <p id="loading_text">loading...</p>
@@ -212,11 +216,13 @@
 
   <h1>PA-X Tracker Map</h1>
 
-  <a href="https://peacerep.org/" target="_blank" title="Visit PeaceRep Website"
+  <!-- <a href="https://peacerep.org/" target="_blank" title="Visit PeaceRep Website"
     ><img id="logo" alt="PeaceRep Logo" src={path} /></a
-  >
+  > -->
 
-  <button id="info_button" on:click={openInformation}>
+  <button id="tracker_button" on:click={openTracker} title="Go to PA-X Tracker"> TRACKER </button>
+
+  <button id="info_button" on:click={openInformation} title="Information">
     <i class="fa fa-info"></i>
   </button>
 
@@ -352,6 +358,45 @@
     #logo {
       height: 27px;
     }
+  }
+
+  #tracker_button {
+    position: absolute;
+    top: 3px;
+    left: 5px;
+    background-color: white;
+    border: 1px solid rgb(173, 173, 173);
+    color: black;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 2px;
+    display: inline-block;
+    font-size: 1em;
+    cursor: pointer;
+    z-index: 10;
+    font-weight: 500;
+    /* width: 70px; */
+  }
+
+  @media only screen and (max-width: 768px) {
+    #tracker_button {
+      font-size: 0.7em;
+    }
+  }
+
+  @media only screen and (max-width: 500px) {
+    #tracker_button {
+      left: 1px;
+      top: 1px;
+      font-size: 0.7em;
+      padding: 5px 5px;
+    }
+  }
+
+  #tracker_button:hover {
+    background-color: #aa4197;
+    color: white;
   }
 
   main {

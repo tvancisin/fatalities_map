@@ -11,7 +11,7 @@
 </script>
 
 <div class="dropdown">
-    <button class="dropbtn">
+    <button class="dropbtn" title="Choose country">
         <i class="fa fa-map-marker"></i>
     </button>
     <div class="dropdown-content">

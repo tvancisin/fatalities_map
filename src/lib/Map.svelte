@@ -392,8 +392,8 @@
 
 <div class="map-container" bind:clientHeight={height}>
   <div id="map" bind:this={map}></div>
-  <Dropdown {country_dropdown} on:close={dropdownSelection} />
-  <button id="refresh_button" on:click={flyToInitialPosition}>
+  <Dropdown {country_dropdown} on:close={dropdownSelection}/>
+  <button id="refresh_button" on:click={flyToInitialPosition} title="Refresh">
     <i class="fa fa-refresh"></i>
   </button>
 </div>
