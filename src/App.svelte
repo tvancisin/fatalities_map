@@ -209,12 +209,12 @@
     on:click={handleScreenClick}
   >
     <button id="loading_button" on:click={handleScreenClick} 
-      >PA-X Tracker Map</button
+      >PA-X Tracker Globe</button
     >
     <p id="loading_text">loading...</p>
   </div>
 
-  <h1>PA-X Tracker Map</h1>
+  <h1>PA-X Tracker Globe</h1>
 
   <!-- <a href="https://peacerep.org/" target="_blank" title="Visit PeaceRep Website"
     ><img id="logo" alt="PeaceRep Logo" src={path} /></a
