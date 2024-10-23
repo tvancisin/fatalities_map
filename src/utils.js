@@ -19,6 +19,7 @@ export async function getCSV(paths) {
 //     return json;
 // }
 
+
 export async function getGeo(url) {
     let response = await d3.json(url);
     // let json = await response.json();
